@@ -17,5 +17,5 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-      - run: cd bms-monitor && sam build --use-container
-      - run: cd bms-monitor && sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+      - run: sam build --use-container
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
