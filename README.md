@@ -315,3 +315,9 @@ Value               arn:aws:iam::949140100595:role/bms-monitor-by-sam-CheckWebsi
 Successfully created/updated stack - bms-monitor-by-sam in us-east-1
 
 ```
+
+## Links
+
+### Examples
+
+- [amazon\-archives/serverless\-app\-examples](https://github.com/amazon-archives/serverless-app-examples)
