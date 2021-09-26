@@ -11,6 +11,23 @@ Globals:
     Timeout: 30
 
 Resources:
+  BmsMonitoringSnsTopic:
+    # see: https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html
+    Type: AWS::SNS::Topic
+    Properties:
+      # ContentBasedDeduplication: false
+      # DisplayName: String
+      FifoTopic: false
+      Subscription:
+        - Endpoint: callistoiv+aws@gmail.com
+          Protocol: EMAIL
+      Tags:
+        - Key: cdk
+          Value: "false"
+        - Key: sam
+          Value: "true"
+      TopicName: BmsMonitoringTopic
+
   BmsCheckWebsitePeriodicallyFun:
     Type: AWS::Serverless::Function
     Properties:
@@ -35,7 +52,11 @@ Resources:
         DestinationConfig:
           OnFailure:
             Type: SNS
-            Destination: arn:aws:sns:us-east-1:949140100595:NotifyMe
+            # Destination: arn:aws:sns:us-east-1:949140100595:NotifyMe
+            # Destination: !GetAtt BmsMonitoringSnsTopic.Arn
+            Properties:
+              Topic:
+                Ref: BmsMonitoringSnsTopic
 
   BmsMonitoringLogGroup:
     Type: AWS::Logs::LogGroup
@@ -49,3 +70,7 @@ Outputs:
   BmsCheckWebsitePeriodicallyFun:
     Description: "CheckWebsite Periodically Lambda Function ARN"
     Value: !GetAtt BmsCheckWebsitePeriodicallyFun.Arn
+
+  # BmsMonitoringSnsTopic:
+  #   Description: "BmsMonitoringSnsTopic SNS Topic ARN"
+  #   Value: !GetAtt BmsMonitoringSnsTopic.Arn
