@@ -9,6 +9,11 @@ Description: >
 Globals:
   Function:
     Timeout: 30
+    Tags:
+      cdk: "false"
+      sam: "true"
+      system: bms
+      repository:  http_check-monitor
 
 Resources:
   BmsMonitoringSnsTopic:
@@ -57,6 +62,10 @@ Resources:
             Properties:
               Topic:
                 Ref: BmsMonitoringSnsTopic
+          # OnSuccess:
+          #   Type: SNS
+          #   Destination:
+          #     Ref: DestinationSNS       # Arn of an SNS topic declared in the tempate file
 
   BmsMonitoringLogGroup:
     Type: AWS::Logs::LogGroup
