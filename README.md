@@ -106,6 +106,9 @@ $ sam init --name bms-monitor2 --runtime python3.8 --dependency-manager pip --ap
 ### Sam
 
 - [\[アップデート\]AWS SAMのデプロイが簡単になりました \| Developers\.IO](https://dev.classmethod.jp/articles/aws-sam-simplifies-deployment/)
+- [SAM CLI \- AWS Cloud Development Kit \(CDK\)](https://docs.aws.amazon.com/ja_jp/cdk/latest/guide/sam.html)
+- [Better together: AWS SAM and AWS CDK \| AWS Compute Blog](https://aws.amazon.com/blogs/compute/better-together-aws-sam-and-aws-cdk/)
+- [Serverless Land \| Resources for learning about AWS serverless technology](https://serverlessland.com/)
 
 ### Doc for sam
 - [Tutorial: Deploying a Hello World application \- AWS Serverless Application Model](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html)
