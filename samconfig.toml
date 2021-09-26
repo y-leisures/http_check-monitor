@@ -8,4 +8,4 @@ s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-cnzbjwehiaa9"
 s3_prefix = "bms-monitor-by-sam"
 region = "ap-northeast-1"
 capabilities = "CAPABILITY_IAM"
-# confirm_changeset = true
+confirm_changeset = true
