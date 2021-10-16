@@ -3,7 +3,20 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   bms-monitor
 
-  Sample SAM Template for bms-monitor
+  SAM Template for bms-monitor
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: BmsMonitorBySam
+    Description: this application is for private
+    SpdxLicenseId: Apache-2.0
+    Author: Yukihiro Okada
+    LicenseUrl: LICENSE
+    ReadmeUrl: README.md
+    Labels: ['bms', 'private']
+    SemanticVersion: 0.0.1
+    HomePageUrl: https://github.com/y-leisures/http_check-monitor
+    SourceCodeUrl: https://github.com/y-leisures/http_check-monitor
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
