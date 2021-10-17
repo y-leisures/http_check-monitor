@@ -43,15 +43,15 @@ Mappings:
     development:
       Alias: dev
       LogLevelMapping: DEBUG
-      FunctionName: "bms-dev-monitor-by-sam"
+      FunctionName: "bms-dev-http-monitor"
     staging:
       Alias: stg
       LogLevelMapping: DEBUG
-      FunctionName: "bms-stg-monitor-by-sam"
+      FunctionName: "bms-stg-http-monitor"
     production:
       Alias: prod
       LogLevelMapping: INFO
-      FunctionName: "bms-prod-monitor-by-sam"
+      FunctionName: "bms-prod-http-monitor"
 
 
 Resources:
@@ -70,21 +70,14 @@ Resources:
           Value: "false"
         - Key: sam
           Value: "true"
-      TopicName: BmsMonitoringTopic
+      TopicName: !Sub "bms-${Stage}-monitoring"
 
   BmsCheckWebsitePeriodicallyFun:
     Type: AWS::Serverless::Function
     Properties:
-      # FunctionName: !Sub "bms-${Stage}-monitor-by-sam"
-      FunctionName: !FindInMap [ StageMapping, !Ref Stage, FunctionName ]
-      # FunctionName: !FindInMap
-      #                 - StageMapping
-      #                 - !Ref 'Stage'
-      #                 - FunctionName
-      # FunctionName: !Sub "bms-${!FindInMap [ StageMapping, !Ref Stage, Alias ]}-monitor-by-sam"
-      # FunctionName: !Sub
-      #     - bms-${DevAlias}-monitor-by-sam
-      #     - { DevAlias: !FindInMap: [ StageMapping, !Ref Stage, Alias]}
+      FunctionName: !Sub
+        - "bms-${Alias}-http-monitor"
+        - { "Alias": !FindInMap [ StageMapping, !Ref Stage, Alias]}
       CodeUri: check_website/
       Handler: app.lambda_handler
       Runtime: python3.9
