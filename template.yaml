@@ -28,6 +28,32 @@ Globals:
       system: bms
       repository:  http_check-monitor
 
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - development
+      - staging
+      - production
+    Default: development
+    Description: Stage in which the application will be deployed. Allowed values [development, staging, production]
+
+Mappings:
+  StageMapping:
+    development:
+      Alias: dev
+      LogLevelMapping: DEBUG
+      FunctionName: "bms-dev-http-monitor"
+    staging:
+      Alias: stg
+      LogLevelMapping: DEBUG
+      FunctionName: "bms-stg-http-monitor"
+    production:
+      Alias: prod
+      LogLevelMapping: INFO
+      FunctionName: "bms-prod-http-monitor"
+
+
 Resources:
   BmsMonitoringSnsTopic:
     # see: https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html
@@ -44,12 +70,14 @@ Resources:
           Value: "false"
         - Key: sam
           Value: "true"
-      TopicName: BmsMonitoringTopic
+      TopicName: !Sub "bms-${Stage}-monitoring"
 
   BmsCheckWebsitePeriodicallyFun:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: bms-monitor-by-sam
+      FunctionName: !Sub
+        - "bms-${Alias}-http-monitor"
+        - { "Alias": !FindInMap [ StageMapping, !Ref Stage, Alias]}
       CodeUri: check_website/
       Handler: app.lambda_handler
       Runtime: python3.9
