@@ -38,6 +38,22 @@ Parameters:
     Default: development
     Description: Stage in which the application will be deployed. Allowed values [development, staging, production]
 
+Mappings:
+  StageMapping:
+    development:
+      Alias: dev
+      LogLevelMapping: DEBUG
+      FunctionName: "bms-dev-monitor-by-sam"
+    staging:
+      Alias: stg
+      LogLevelMapping: DEBUG
+      FunctionName: "bms-stg-monitor-by-sam"
+    production:
+      Alias: prod
+      LogLevelMapping: INFO
+      FunctionName: "bms-prod-monitor-by-sam"
+
+
 Resources:
   BmsMonitoringSnsTopic:
     # see: https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html
@@ -59,7 +75,16 @@ Resources:
   BmsCheckWebsitePeriodicallyFun:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub "bms-${Stage}-monitor-by-sam"
+      # FunctionName: !Sub "bms-${Stage}-monitor-by-sam"
+      # FunctionName: Fn::FindInMap [ StageMapping, !Ref Stage, FunctionName ]
+      # FunctionName: !Sub "bms-${!FindInMap [ StageMapping, !Ref Stage, Alias ]}-monitor-by-sam"
+      # FunctionName: !Sub
+      #     - bms-${DevAlias}-monitor-by-sam
+      #     - { DevAlias: !FindInMap: [ StageMapping, !Ref Stage, Alias]}
+      FunctionName: !FindInMap
+                      - StageMapping
+                      - !Ref 'Stage'
+                      - FunctionName
       CodeUri: check_website/
       Handler: app.lambda_handler
       Runtime: python3.9
