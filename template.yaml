@@ -55,6 +55,56 @@ Mappings:
 
 
 Resources:
+  BmsMonitoringLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+        - arn:aws:iam::aws:policy/AmazonSNSFullAccess
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action:
+              - sts:AssumeRole
+            Principal:
+              Service: lambda.amazonaws.com
+      Path: /
+      Policies:
+        - PolicyName: AllowToCreateLogGroup
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                Resource: "arn:aws:logs:us-east-1:949140100595:*"
+        - PolicyName: AllowToSendLogToGroup
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:us-east-1:949140100595:log-group:/aws/lambda/monitor_bms:*"
+        - PolicyName: AllowToPublishToSns
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "sns:Publish"
+                Resource: "arn:aws:sns:us-east-1:949140100595:NotifyMe"
+        - PolicyName: AllowToGetSecretValue
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: "*"
+
   BmsMonitoringSnsTopic:
     # see: https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html
     Type: AWS::SNS::Topic
@@ -121,6 +171,8 @@ Outputs:
     Description: "CheckWebsite Periodically Lambda Function ARN"
     Value: !GetAtt BmsCheckWebsitePeriodicallyFun.Arn
 
+  BmsMonitoringLambdaRole:
+    Value: !GetAtt BmsMonitoringLambdaRole.Arn
   # BmsMonitoringSnsTopic:
   #   Description: "BmsMonitoringSnsTopic SNS Topic ARN"
   #   Value: !GetAtt BmsMonitoringSnsTopic.Arn
