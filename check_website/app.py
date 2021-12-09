@@ -1,25 +1,30 @@
-import http.client
+import base64
 import json
 import os
-import urllib.request
 from datetime import datetime
-from urllib.error import HTTPError, URLError
-
-import twitter
+from urllib.error import HTTPError
 
 import boto3
-import base64
+import requests
+import twitter
 from botocore.exceptions import ClientError
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 
-def check_health(url: object, timeout: object = 30) -> object:
+def check_health(url: object, timeout: int = 30) -> bool:
+    retries = Retry(total=5, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
+    s = requests.session()
+    s.mount(prefix='https://', adapter=HTTPAdapter(max_retries=retries))
+    headers = {
+        'From': 'Request from aws lambda function',
+    }
+
     try:
-        response: http.client.HTTPResponse = urllib.request.urlopen(url, timeout=timeout)
-        if response.code == 200:
-            return True
-        else:
-            return False
-    except (HTTPError, URLError)  as e:
+        resp = s.get(url, headers=headers, timeout=timeout)
+        resp.raise_for_status()
+        return True
+    except HTTPError as _:
         return False
 
 
