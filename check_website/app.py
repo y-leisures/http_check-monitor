@@ -12,7 +12,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 
-def check_health(url: object, timeout: object = 30) -> object:
+def check_health(url: object, timeout: int = 30) -> bool:
     retries = Retry(total=5, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
     s = requests.session()
     s.mount(prefix='https://', adapter=HTTPAdapter(max_retries=retries))
@@ -21,7 +21,7 @@ def check_health(url: object, timeout: object = 30) -> object:
     }
 
     try:
-        resp = s.get(url, headers=headers)
+        resp = s.get(url, headers=headers, timeout=timeout)
         resp.raise_for_status()
         return True
     except HTTPError as _:
