@@ -69,7 +69,7 @@ Resources:
               - sts:AssumeRole
             Principal:
               Service: lambda.amazonaws.com
-      Path: /
+      Path: /service-role/
       Policies:
         - PolicyName: AllowToCreateLogGroup
           PolicyDocument:
@@ -104,6 +104,17 @@ Resources:
                 Action:
                   - secretsmanager:GetSecretValue
                 Resource: "*"
+        - PolicyName: GetSecretTokens4TwitterBms
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "secretsmanager:GetResourcePolicy"
+                  - "secretsmanager:GetSecretValue"
+                  - "secretsmanager:DescribeSecret"
+                  - "secretsmanager:ListSecretVersionIds"
+                "Resource": "arn:aws:secretsmanager:us-east-1:949140100595:secret:TwitterApiTokenForBms-Nbm5Y6"
 
   BmsMonitoringSnsTopic:
     # see: https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html
