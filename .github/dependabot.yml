@@ -1,0 +1,9 @@
+# see: https://docs.github.com/en/code-security/dependabot/dependabot-security-updates
+# see: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#package-ecosystem
+version: 1
+updates:
+  - package-ecosystem: "poetry"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 0
