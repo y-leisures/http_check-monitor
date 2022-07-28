@@ -8,11 +8,11 @@ updates:
       # Check for updates to GitHub Actions every weekday
       interval: "weekly"
     reviewers:
-      - "octocat"
+      - "yuokada"
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     reviewers:
-      - "octocat"
+      - "yuokada"
