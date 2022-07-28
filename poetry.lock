@@ -72,7 +72,7 @@ tzlocal = "3.0"
 watchdog = "2.1.2"
 
 [package.extras]
-dev = ["pylint (>=2.13.0,<3)", "coverage (==5.3)", "pytest-cov (==2.10.1)", "mypy (==0.790)", "boto3-stubs[ecr,lambda,xray,s3,sts,iam,cloudformation,stepfunctions,schemas,secretsmanager,signer,apigateway] (==1.21.21)", "pytest (==6.1.1)", "parameterized (==0.7.4)", "pytest-xdist (==2.1.0)", "pytest-forked (==1.3.0)", "pytest-timeout (==1.4.2)", "pytest-rerunfailures (==9.1.1)", "black (==21.10b0)", "psutil (==5.9.0)"]
+dev = ["pylint (>=2.13.0,<3)", "coverage (==5.3)", "pytest-cov (==2.10.1)", "mypy (==0.790)", "boto3-stubs[lambda,xray,apigateway,sts,iam,secretsmanager,signer,ecr,cloudformation,schemas,s3,stepfunctions] (==1.21.21)", "pytest (==6.1.1)", "parameterized (==0.7.4)", "pytest-xdist (==2.1.0)", "pytest-forked (==1.3.0)", "pytest-timeout (==1.4.2)", "pytest-rerunfailures (==9.1.1)", "black (==21.10b0)", "psutil (==5.9.0)"]
 pre-dev = ["pylint (>=2.13.0,<3)"]
 
 [[package]]
@@ -103,35 +103,35 @@ chardet = ">=3.0.2"
 
 [[package]]
 name = "boto3"
-version = "1.20.22"
+version = "1.24.40"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
-python-versions = ">= 3.6"
+python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.23.22,<1.24.0"
-jmespath = ">=0.7.1,<1.0.0"
-s3transfer = ">=0.5.0,<0.6.0"
+botocore = ">=1.27.40,<1.28.0"
+jmespath = ">=0.7.1,<2.0.0"
+s3transfer = ">=0.6.0,<0.7.0"
 
 [package.extras]
 crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.23.22"
+version = "1.27.40"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
-python-versions = ">= 3.6"
+python-versions = ">= 3.7"
 
 [package.dependencies]
-jmespath = ">=0.7.1,<1.0.0"
+jmespath = ">=0.7.1,<2.0.0"
 python-dateutil = ">=2.1,<3.0.0"
 urllib3 = ">=1.25.4,<1.27"
 
 [package.extras]
-crt = ["awscrt (==0.12.5)"]
+crt = ["awscrt (==0.13.8)"]
 
 [[package]]
 name = "certifi"
@@ -537,11 +537,11 @@ rsa = ["oauthlib[signedtoken] (>=3.0.0)"]
 
 [[package]]
 name = "s3transfer"
-version = "0.5.0"
+version = "0.6.0"
 description = "An Amazon S3 Transfer Manager"
 category = "main"
 optional = false
-python-versions = ">= 3.6"
+python-versions = ">= 3.7"
 
 [package.dependencies]
 botocore = ">=1.12.36,<2.0a.0"
@@ -676,7 +676,7 @@ dev = ["sphinx-issues", "pallets-sphinx-themes", "sphinx", "tox", "coverage", "p
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "4664535762265b2644ca611634013ec1d4a2298398e48f17e378332f6cad6103"
+content-hash = "eca777a0d774ae0bc6aadf50e122a9844f8853bf497445bfa817c8f77794a07f"
 
 [metadata.files]
 arrow = [
@@ -710,12 +710,12 @@ binaryornot = [
     {file = "binaryornot-0.4.4.tar.gz", hash = "sha256:359501dfc9d40632edc9fac890e19542db1a287bbcfa58175b66658392018061"},
 ]
 boto3 = [
-    {file = "boto3-1.20.22-py3-none-any.whl", hash = "sha256:4cdaca9699a266936c04543700a5c6cdf52b563d33703812459cfe42c4c63ace"},
-    {file = "boto3-1.20.22.tar.gz", hash = "sha256:c8fbacb7d4e90a17cfe2a68e728c574e5b4a97ab66de417a44c373f7236366a1"},
+    {file = "boto3-1.24.40-py3-none-any.whl", hash = "sha256:904294a46816b2b134f5f3d83e07f0496155a4815e90e0d717949f1e8c2846d6"},
+    {file = "boto3-1.24.40.tar.gz", hash = "sha256:e05495e4da96d1811cc9cd960de2d044468f50cd192315747d61be9c1b879fdb"},
 ]
 botocore = [
-    {file = "botocore-1.23.22-py3-none-any.whl", hash = "sha256:e66e4905dc048d5109df2cc6db55772b9111bfab8907557fa610f9241dca8752"},
-    {file = "botocore-1.23.22.tar.gz", hash = "sha256:6738e87baa48e4befc447dded787fcadb87a23efb3a5ee6bfe78177bc9630516"},
+    {file = "botocore-1.27.40-py3-none-any.whl", hash = "sha256:5482d44e4964dcaca673a7f115d889ac4b68e4f1b372ff0a294d4ee43a7b2a03"},
+    {file = "botocore-1.27.40.tar.gz", hash = "sha256:cb44d4af0119f34ca3354c2ed26a77abc76549d070c72288b9d76fc772f38518"},
 ]
 certifi = [
     {file = "certifi-2021.10.8-py2.py3-none-any.whl", hash = "sha256:d62a0163eb4c2344ac042ab2bdf75399a71a2d8c7d47eac2e2ee91b9d6339569"},
@@ -1018,8 +1018,8 @@ requests-oauthlib = [
     {file = "requests_oauthlib-1.3.0-py3.7.egg", hash = "sha256:fa6c47b933f01060936d87ae9327fead68768b69c6c9ea2109c48be30f2d4dbc"},
 ]
 s3transfer = [
-    {file = "s3transfer-0.5.0-py3-none-any.whl", hash = "sha256:9c1dc369814391a6bda20ebbf4b70a0f34630592c9aa520856bf384916af2803"},
-    {file = "s3transfer-0.5.0.tar.gz", hash = "sha256:50ed823e1dc5868ad40c8dc92072f757aa0e653a192845c94a3b676f4a62da4c"},
+    {file = "s3transfer-0.6.0-py3-none-any.whl", hash = "sha256:06176b74f3a15f61f1b4f25a1fc29a4429040b7647133a463da8fa5bd28d5ecd"},
+    {file = "s3transfer-0.6.0.tar.gz", hash = "sha256:2ed07d3866f523cc561bf4a00fc5535827981b117dd7876f036b0c1aca42c947"},
 ]
 serverlessrepo = [
     {file = "serverlessrepo-0.1.10-py2.py3-none-any.whl", hash = "sha256:b99c69be8ce87ccc48103fbe371ba7b148c3374c57862e59118c402522e5ed52"},
