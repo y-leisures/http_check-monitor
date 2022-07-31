@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   bms-monitor
@@ -13,7 +13,7 @@ Metadata:
     Author: Yukihiro Okada
     LicenseUrl: LICENSE
     ReadmeUrl: README.md
-    Labels: ['bms', 'private']
+    Labels: ["bms", "private"]
     SemanticVersion: 0.0.1
     HomePageUrl: https://github.com/y-leisures/http_check-monitor
     SourceCodeUrl: https://github.com/y-leisures/http_check-monitor
@@ -26,7 +26,7 @@ Globals:
       cdk: "false"
       sam: "true"
       system: bms
-      repository:  http_check-monitor
+      repository: http_check-monitor
 
 Parameters:
   Stage:
@@ -52,7 +52,6 @@ Mappings:
       Alias: prod
       LogLevelMapping: INFO
       FunctionName: "bms-prod-http-monitor"
-
 
 Resources:
   BmsMonitoringLambdaRole:
@@ -122,15 +121,28 @@ Resources:
           Value: "true"
       TopicName: !Sub "bms-${Stage}-monitoring"
 
+  BmsPythonLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Sub "bms-common-function-layer-${Stage}"
+      ContentUri: layers/
+      CompatibleRuntimes:
+        - python3.9
+      RetentionPolicy: Retain
+    Metadata:
+      BuildMethod: python3.9
+
   BmsCheckWebsitePeriodicallyFun:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub
         - "bms-${Alias}-http-monitor"
-        - { "Alias": !FindInMap [ StageMapping, !Ref Stage, Alias]}
+        - { "Alias": !FindInMap [StageMapping, !Ref Stage, Alias] }
       CodeUri: check_website/
       Handler: app.lambda_handler
       Runtime: python3.9
+      Layers:
+        - !Ref BmsPythonLayer
       Role: arn:aws:iam::949140100595:role/service-role/monitor_bms-role-zswvtb9u
       Events:
         # The length of "BmsCheckWebsitePeriodicallyFunCheckWebsiteScheduledEventLambdaTarget" is 71
@@ -164,6 +176,21 @@ Resources:
       LogGroupName: !Sub /aws/lambda/${BmsCheckWebsitePeriodicallyFun}
       RetentionInDays: 30
 
+  BmsMonitoringRecordTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      # PrimaryKey: PrimaryKeyObject
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      # SSESpecification: SSESpecification
+      TableName: !Sub "bms-monitoring-events-${Stage}"
+      Tags:
+        cdk: "false"
+        sam: "true"
+        system: bms
+        repository: http_check-monitor
+
 # see: https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
 # see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html
 Outputs:
@@ -173,6 +200,9 @@ Outputs:
 
   BmsMonitoringLambdaRole:
     Value: !GetAtt BmsMonitoringLambdaRole.Arn
+
+  BmsMonitoringRecordTableName:
+    Value: !Ref BmsMonitoringRecordTable
   # BmsMonitoringSnsTopic:
   #   Description: "BmsMonitoringSnsTopic SNS Topic ARN"
   #   Value: !GetAtt BmsMonitoringSnsTopic.Arn
