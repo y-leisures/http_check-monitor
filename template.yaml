@@ -103,6 +103,33 @@ Resources:
                 Action:
                   - secretsmanager:GetSecretValue
                 Resource: "*"
+        - PolicyName: AllowToAccessDynamoDBTables
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: ListAndDescribe
+                Effect: Allow
+                Action:
+                - dynamodb:List*
+                - dynamodb:DescribeReservedCapacity*
+                - dynamodb:DescribeLimits
+                - dynamodb:DescribeTimeToLive
+                Resource: "*"
+              - Sid: SpecificTable
+                Effect: Allow
+                Action:
+                - dynamodb:BatchGet*
+                - dynamodb:DescribeStream
+                - dynamodb:DescribeTable
+                - dynamodb:Get*
+                - dynamodb:Query
+                - dynamodb:Scan
+                - dynamodb:BatchWrite*
+                - dynamodb:CreateTable
+                - dynamodb:Delete*
+                - dynamodb:Update*
+                - dynamodb:PutItem
+                Resource: !Sub "arn:aws:dynamodb:*:*:table/bms-monitoring-events-${Stage}"
 
   BmsMonitoringSnsTopic:
     # see: https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html
