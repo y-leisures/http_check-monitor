@@ -180,7 +180,9 @@ Resources:
   BmsMonitoringRecordTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      # PrimaryKey: PrimaryKeyObject
+      PrimaryKey:
+        Name: eventTime
+        Type: Number
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
