@@ -16,6 +16,7 @@ from common import get_secret
 @dataclasses.dataclass
 class FailureEven:
     eventTime: int
+    failing_url: str
     completionTime: int = 0
     resolved: bool = False
 
@@ -36,12 +37,12 @@ def check_health(url: object, timeout: int = 30) -> bool:
         return False
 
 
-def record_failure_event():
+def record_failure_event(failing_url: str):
     resource = boto3.resource('dynamodb')
     table = resource.Table('bms-monitoring-events-development')
 
     now = datetime.now().timestamp()
-    row = dataclasses.asdict(FailureEven(eventTime=int(now)))
+    row = dataclasses.asdict(FailureEven(eventTime=int(now), failing_url=failing_url))
     table.put_item(Item=row)
 
 
@@ -95,6 +96,7 @@ def lambda_handler(event, context):
 
     result: bool = check_health(monitor_url)
     if not result:
+        record_failure_event(failing_url=monitor_url)
         main(monitor_url=monitor_url)
         return {
             "statusCode": 200,
