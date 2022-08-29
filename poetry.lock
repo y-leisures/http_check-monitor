@@ -18,9 +18,9 @@ python-versions = ">=3.6"
 argon2-cffi-bindings = "*"
 
 [package.extras]
-dev = ["pre-commit", "cogapp", "tomli", "coverage[toml] (>=5.0.2)", "hypothesis", "pytest", "sphinx", "sphinx-notfound-page", "furo"]
-docs = ["sphinx", "sphinx-notfound-page", "furo"]
-tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pytest"]
+tests = ["pytest", "hypothesis", "coverage[toml] (>=5.0.2)"]
+docs = ["furo", "sphinx-notfound-page", "sphinx"]
+dev = ["furo", "sphinx-notfound-page", "sphinx", "pytest", "hypothesis", "coverage[toml] (>=5.0.2)", "tomli", "cogapp", "pre-commit"]
 
 [[package]]
 name = "argon2-cffi-bindings"
@@ -60,7 +60,7 @@ python-versions = "*"
 six = "*"
 
 [package.extras]
-test = ["astroid", "pytest"]
+test = ["pytest", "astroid"]
 
 [[package]]
 name = "atomicwrites"
@@ -79,10 +79,10 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.extras]
-dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface", "furo", "sphinx", "sphinx-notfound-page", "pre-commit"]
-docs = ["furo", "sphinx", "zope.interface", "sphinx-notfound-page"]
-tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface"]
-tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins"]
+tests_no_zope = ["pytest-mypy-plugins", "mypy", "six", "pytest (>=4.3.0)", "pympler", "hypothesis", "coverage[toml] (>=5.0.2)"]
+tests = ["zope.interface", "pytest-mypy-plugins", "mypy", "six", "pytest (>=4.3.0)", "pympler", "hypothesis", "coverage[toml] (>=5.0.2)"]
+docs = ["sphinx-notfound-page", "zope.interface", "sphinx", "furo"]
+dev = ["pre-commit", "sphinx-notfound-page", "sphinx", "furo", "zope.interface", "pytest-mypy-plugins", "mypy", "six", "pytest (>=4.3.0)", "pympler", "hypothesis", "coverage[toml] (>=5.0.2)"]
 
 [[package]]
 name = "aws-lambda-builders"
@@ -97,7 +97,7 @@ dev = ["coverage (==5.3)", "pytest-cov (==2.10.1)", "pylint (>=2.6.0,<2.7.0)", "
 
 [[package]]
 name = "aws-sam-cli"
-version = "1.53.0"
+version = "1.55.0"
 description = "AWS SAM CLI is a CLI tool for local development and testing of Serverless applications"
 category = "dev"
 optional = false
@@ -105,7 +105,7 @@ python-versions = ">=3.7, <=4.0, !=4.0"
 
 [package.dependencies]
 aws-lambda-builders = "1.18.0"
-aws-sam-translator = "1.46.0"
+aws-sam-translator = "1.50.0"
 boto3 = ">=1.19.5,<2.0.0"
 chevron = ">=0.12,<1.0"
 click = ">=7.1,<8.0"
@@ -125,12 +125,12 @@ tzlocal = "3.0"
 watchdog = "2.1.2"
 
 [package.extras]
-dev = ["pylint (>=2.13.0,<3)", "coverage (==5.3)", "pytest-cov (==2.10.1)", "mypy (==0.790)", "boto3-stubs[ecr,apigateway,lambda,xray,sts,signer,schemas,iam,secretsmanager,stepfunctions,cloudformation,s3] (==1.21.21)", "pytest (==6.1.1)", "parameterized (==0.7.4)", "pytest-xdist (==2.1.0)", "pytest-forked (==1.3.0)", "pytest-timeout (==1.4.2)", "pytest-rerunfailures (==9.1.1)", "black (==21.10b0)", "psutil (==5.9.0)"]
+dev = ["pylint (>=2.13.0,<3)", "coverage (==5.3)", "pytest-cov (==2.10.1)", "mypy (==0.790)", "boto3-stubs[iam,signer,s3,apigateway,schemas,lambda,secretsmanager,stepfunctions,sts,xray,cloudformation,ecr] (==1.21.21)", "pytest (==6.1.1)", "parameterized (==0.7.4)", "pytest-xdist (==2.1.0)", "pytest-forked (==1.3.0)", "pytest-timeout (==1.4.2)", "pytest-rerunfailures (==9.1.1)", "black (==21.10b0)", "psutil (==5.9.0)"]
 pre-dev = ["pylint (>=2.13.0,<3)"]
 
 [[package]]
 name = "aws-sam-translator"
-version = "1.46.0"
+version = "1.50.0"
 description = "AWS SAM Translator is a library that transform SAM templates into AWS CloudFormation templates"
 category = "dev"
 optional = false
@@ -141,7 +141,7 @@ boto3 = ">=1.19.5,<2.0.0"
 jsonschema = ">=3.2,<4.0"
 
 [package.extras]
-dev = ["coverage (>=5.3,<6.0)", "flake8 (>=3.8.4,<3.9.0)", "tox (>=3.24,<4.0)", "pytest-cov (>=2.10.1,<2.11.0)", "pytest-xdist (>=2.5,<3.0)", "pytest-env (>=0.6.2,<0.7.0)", "pylint (>=2.9.0,<2.10.0)", "pyyaml (>=5.4,<6.0)", "pytest (>=6.2.5,<6.3.0)", "parameterized (>=0.7.4,<0.8.0)", "click (>=7.1,<8.0)", "dateparser (>=0.7,<1.0)", "boto3 (>=1.23,<2)", "requests (>=2.24.0,<2.25.0)", "docopt (>=0.6.2,<0.7.0)", "black (==20.8b1)"]
+dev = ["coverage (>=5.3,<6.0)", "flake8 (>=3.8.4,<3.9.0)", "tox (>=3.24,<4.0)", "pytest-cov (>=2.10.1,<2.11.0)", "pytest-xdist (>=2.5,<3.0)", "pytest-env (>=0.6.2,<0.7.0)", "pylint (>=2.9.0,<2.10.0)", "pyyaml (>=5.4,<6.0)", "pytest (>=6.2.5,<6.3.0)", "parameterized (>=0.7.4,<0.8.0)", "click (>=7.1,<8.0)", "dateparser (>=0.7,<1.0)", "boto3 (>=1.23,<2)", "tenacity (>=7.0.0,<7.1.0)", "requests (>=2.24.0,<2.25.0)", "docopt (>=0.6.2,<0.7.0)", "black (==20.8b1)"]
 
 [[package]]
 name = "backcall"
@@ -163,8 +163,8 @@ python-versions = ">=3.6.0"
 soupsieve = ">1.2"
 
 [package.extras]
-html5lib = ["html5lib"]
 lxml = ["lxml"]
+html5lib = ["html5lib"]
 
 [[package]]
 name = "binaryornot"
@@ -190,8 +190,8 @@ six = ">=1.9.0"
 webencodings = "*"
 
 [package.extras]
+dev = ["mypy (==0.961)", "black (==22.3.0)", "wheel (==0.37.1)", "twine (==4.0.1)", "tox (==3.25.0)", "Sphinx (==4.3.2)", "pytest (==7.1.2)", "pip-tools (==6.6.2)", "hashin (==0.17.0)", "flake8 (==4.0.1)", "build (==0.8.0)"]
 css = ["tinycss2 (>=1.1.0,<1.2)"]
-dev = ["build (==0.8.0)", "flake8 (==4.0.1)", "hashin (==0.17.0)", "pip-tools (==6.6.2)", "pytest (==7.1.2)", "Sphinx (==4.3.2)", "tox (==3.25.0)", "twine (==4.0.1)", "wheel (==0.37.1)", "black (==22.3.0)", "mypy (==0.961)"]
 
 [[package]]
 name = "boto3"
@@ -446,7 +446,7 @@ tornado = ">=6.1"
 traitlets = ">=5.1.0"
 
 [package.extras]
-test = ["flaky", "ipyparallel", "pre-commit", "pytest-cov", "pytest-timeout", "pytest (>=6.0)"]
+test = ["pytest (>=6.0)", "pytest-timeout", "pytest-cov", "pre-commit", "ipyparallel", "flaky"]
 
 [[package]]
 name = "ipython"
@@ -471,17 +471,17 @@ stack-data = "*"
 traitlets = ">=5"
 
 [package.extras]
-all = ["black", "Sphinx (>=1.3)", "ipykernel", "nbconvert", "nbformat", "ipywidgets", "notebook", "ipyparallel", "qtconsole", "pytest (<7.1)", "pytest-asyncio", "testpath", "curio", "matplotlib (!=3.2.0)", "numpy (>=1.19)", "pandas", "trio"]
-black = ["black"]
-doc = ["Sphinx (>=1.3)"]
-kernel = ["ipykernel"]
-nbconvert = ["nbconvert"]
-nbformat = ["nbformat"]
-notebook = ["ipywidgets", "notebook"]
-parallel = ["ipyparallel"]
+test_extra = ["trio", "pandas", "numpy (>=1.19)", "nbformat", "matplotlib (!=3.2.0)", "curio", "testpath", "pytest-asyncio", "pytest (<7.1)"]
+test = ["testpath", "pytest-asyncio", "pytest (<7.1)"]
 qtconsole = ["qtconsole"]
-test = ["pytest (<7.1)", "pytest-asyncio", "testpath"]
-test_extra = ["pytest (<7.1)", "pytest-asyncio", "testpath", "curio", "matplotlib (!=3.2.0)", "nbformat", "numpy (>=1.19)", "pandas", "trio"]
+parallel = ["ipyparallel"]
+notebook = ["notebook", "ipywidgets"]
+nbformat = ["nbformat"]
+nbconvert = ["nbconvert"]
+kernel = ["ipykernel"]
+doc = ["Sphinx (>=1.3)"]
+black = ["black"]
+all = ["trio", "pandas", "numpy (>=1.19)", "matplotlib (!=3.2.0)", "curio", "testpath", "pytest-asyncio", "pytest (<7.1)", "qtconsole", "ipyparallel", "notebook", "ipywidgets", "nbformat", "nbconvert", "ipykernel", "Sphinx (>=1.3)", "black"]
 
 [[package]]
 name = "ipython-genutils"
@@ -562,8 +562,8 @@ pyrsistent = ">=0.14.0"
 six = ">=1.11.0"
 
 [package.extras]
-format = ["idna", "jsonpointer (>1.13)", "rfc3987", "strict-rfc3339", "webcolors"]
-format_nongpl = ["idna", "jsonpointer (>1.13)", "webcolors", "rfc3986-validator (>0.1.0)", "rfc3339-validator"]
+format_nongpl = ["rfc3339-validator", "rfc3986-validator (>0.1.0)", "webcolors", "jsonpointer (>1.13)", "idna"]
+format = ["webcolors", "strict-rfc3339", "rfc3987", "jsonpointer (>1.13)", "idna"]
 
 [[package]]
 name = "jupyter-client"
@@ -583,8 +583,8 @@ tornado = ">=6.0"
 traitlets = "*"
 
 [package.extras]
-doc = ["ipykernel", "myst-parser", "sphinx-rtd-theme", "sphinx (>=1.3.6)", "sphinxcontrib-github-alt"]
-test = ["codecov", "coverage", "ipykernel (>=6.5)", "ipython", "mypy", "pre-commit", "pytest", "pytest-asyncio (>=0.18)", "pytest-cov", "pytest-timeout"]
+test = ["pytest-timeout", "pytest-cov", "pytest-asyncio (>=0.18)", "pytest", "pre-commit", "mypy", "ipython", "ipykernel (>=6.5)", "coverage", "codecov"]
+doc = ["sphinxcontrib-github-alt", "sphinx (>=1.3.6)", "sphinx-rtd-theme", "myst-parser", "ipykernel"]
 
 [[package]]
 name = "jupyter-core"
@@ -599,7 +599,7 @@ pywin32 = {version = ">=1.0", markers = "sys_platform == \"win32\" and platform_
 traitlets = "*"
 
 [package.extras]
-test = ["ipykernel", "pre-commit", "pytest", "pytest-cov", "pytest-timeout"]
+test = ["pytest-timeout", "pytest-cov", "pytest", "pre-commit", "ipykernel"]
 
 [[package]]
 name = "jupyterlab-pygments"
@@ -651,8 +651,8 @@ nest-asyncio = "*"
 traitlets = ">=5.0.0"
 
 [package.extras]
-sphinx = ["Sphinx (>=1.7)", "sphinx-book-theme", "mock", "moto", "myst-parser"]
-test = ["ipython (<8.0.0)", "ipykernel", "ipywidgets (<8.0.0)", "pytest (>=4.1)", "pytest-asyncio", "pytest-cov (>=2.6.1)", "check-manifest", "flake8", "mypy", "xmltodict", "black", "pip (>=18.1)", "wheel (>=0.31.0)", "setuptools (>=38.6.0)", "twine (>=1.11.0)"]
+test = ["twine (>=1.11.0)", "setuptools (>=38.6.0)", "wheel (>=0.31.0)", "pip (>=18.1)", "black", "xmltodict", "mypy", "flake8", "check-manifest", "pytest-cov (>=2.6.1)", "pytest-asyncio", "pytest (>=4.1)", "ipywidgets (<8.0.0)", "ipykernel", "ipython (<8.0.0)"]
+sphinx = ["myst-parser", "moto", "mock", "sphinx-book-theme", "Sphinx (>=1.7)"]
 
 [[package]]
 name = "nbconvert"
@@ -680,11 +680,11 @@ testpath = "*"
 traitlets = ">=5.0"
 
 [package.extras]
-all = ["pytest", "pytest-cov", "pytest-dependency", "ipykernel", "ipywidgets (>=7)", "pyppeteer (>=1,<1.1)", "tornado (>=4.0)", "sphinx (>=1.5.1)", "sphinx-rtd-theme", "nbsphinx (>=0.2.12)", "ipython"]
-docs = ["sphinx (>=1.5.1)", "sphinx-rtd-theme", "nbsphinx (>=0.2.12)", "ipython"]
-serve = ["tornado (>=4.0)"]
-test = ["pytest", "pytest-cov", "pytest-dependency", "ipykernel", "ipywidgets (>=7)", "pyppeteer (>=1,<1.1)"]
 webpdf = ["pyppeteer (>=1,<1.1)"]
+test = ["pyppeteer (>=1,<1.1)", "ipywidgets (>=7)", "ipykernel", "pytest-dependency", "pytest-cov", "pytest"]
+serve = ["tornado (>=4.0)"]
+docs = ["ipython", "nbsphinx (>=0.2.12)", "sphinx-rtd-theme", "sphinx (>=1.5.1)"]
+all = ["ipython", "nbsphinx (>=0.2.12)", "sphinx-rtd-theme", "sphinx (>=1.5.1)", "tornado (>=4.0)", "pyppeteer (>=1,<1.1)", "ipywidgets (>=7)", "ipykernel", "pytest-dependency", "pytest-cov", "pytest"]
 
 [[package]]
 name = "nbformat"
@@ -701,7 +701,7 @@ jupyter-core = "*"
 traitlets = ">=5.1"
 
 [package.extras]
-test = ["check-manifest", "testpath", "pytest", "pre-commit"]
+test = ["pre-commit", "pytest", "testpath", "check-manifest"]
 
 [[package]]
 name = "nest-asyncio"
@@ -737,9 +737,9 @@ tornado = ">=6.1"
 traitlets = ">=4.2.1"
 
 [package.extras]
-docs = ["sphinx", "nbsphinx", "sphinxcontrib-github-alt", "sphinx-rtd-theme", "myst-parser"]
+test = ["requests-unixsocket", "pytest-cov", "selenium", "nbval", "testpath", "requests", "coverage", "pytest"]
 json-logging = ["json-logging"]
-test = ["pytest", "coverage", "requests", "testpath", "nbval", "selenium", "pytest-cov", "requests-unixsocket"]
+docs = ["myst-parser", "sphinx-rtd-theme", "sphinxcontrib-github-alt", "nbsphinx", "sphinx"]
 
 [[package]]
 name = "oauthlib"
@@ -750,9 +750,9 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-rsa = ["cryptography (>=3.0.0,<4)"]
+signedtoken = ["pyjwt (>=2.0.0,<3)", "cryptography (>=3.0.0,<4)"]
 signals = ["blinker (>=1.4.0)"]
-signedtoken = ["cryptography (>=3.0.0,<4)", "pyjwt (>=2.0.0,<3)"]
+rsa = ["cryptography (>=3.0.0,<4)"]
 
 [[package]]
 name = "packaging"
@@ -782,8 +782,8 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
-testing = ["docopt", "pytest (<6.0.0)"]
+testing = ["pytest (<6.0.0)", "docopt"]
+qa = ["mypy (==0.782)", "flake8 (==3.8.3)"]
 
 [[package]]
 name = "pexpect"
@@ -847,7 +847,7 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.extras]
-test = ["ipaddress", "mock", "enum34", "pywin32", "wmi"]
+test = ["wmi", "pywin32", "enum34", "mock", "ipaddress"]
 
 [[package]]
 name = "ptyprocess"
@@ -901,7 +901,7 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-diagrams = ["jinja2", "railroad-diagrams"]
+diagrams = ["railroad-diagrams", "jinja2"]
 
 [[package]]
 name = "pypiwin32"
@@ -941,7 +941,7 @@ py = ">=1.8.2"
 toml = "*"
 
 [package.extras]
-testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xmlschema"]
+testing = ["xmlschema", "requests", "nose", "mock", "hypothesis (>=3.56)", "argcomplete"]
 
 [[package]]
 name = "python-dateutil"
@@ -1048,8 +1048,8 @@ idna = ">=2.5,<3"
 urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
-security = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)"]
-socks = ["PySocks (>=1.5.6,!=1.5.7)", "win-inet-pton"]
+socks = ["win-inet-pton", "PySocks (>=1.5.6,!=1.5.7)"]
+security = ["cryptography (>=1.3.4)", "pyOpenSSL (>=0.14)"]
 
 [[package]]
 name = "requests-oauthlib"
@@ -1152,7 +1152,7 @@ pywinpty = {version = ">=1.1.0", markers = "os_name == \"nt\""}
 tornado = ">=6.1.0"
 
 [package.extras]
-test = ["pre-commit", "pytest-timeout", "pytest (>=6.0)"]
+test = ["pytest (>=6.0)", "pytest-timeout", "pre-commit"]
 
 [[package]]
 name = "testpath"
@@ -1206,7 +1206,7 @@ optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-test = ["pre-commit", "pytest"]
+test = ["pytest", "pre-commit"]
 
 [[package]]
 name = "typing-extensions"
@@ -1247,9 +1247,9 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 
 [package.extras]
-brotli = ["brotlipy (>=0.6.0)"]
-secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
+secure = ["ipaddress", "certifi", "idna (>=2.0.0)", "cryptography (>=1.3.4)", "pyOpenSSL (>=0.14)"]
+brotli = ["brotlipy (>=0.6.0)"]
 
 [[package]]
 name = "watchdog"
@@ -1306,7 +1306,7 @@ dev = ["sphinx-issues", "pallets-sphinx-themes", "sphinx", "tox", "coverage", "p
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "7d9cf34f5f7fb0dbeee0b68d0b364638d81475e816f8ec435d4716adb46a90c5"
+content-hash = "8615078e548d71f2799dfa793becc03c0c54dcf3f2b0db2e5ec811ba80a0bf7c"
 
 [metadata.files]
 appnope = [
@@ -1362,13 +1362,13 @@ aws-lambda-builders = [
     {file = "aws_lambda_builders-1.18.0.tar.gz", hash = "sha256:c0bd4b4288f0aa9cba27493065f5fb986425b5b49620b93a391620403eeb97e0"},
 ]
 aws-sam-cli = [
-    {file = "aws-sam-cli-1.53.0.tar.gz", hash = "sha256:9085be68662e4be26038cb0f6de2e03d280b14d28b4aa1da675087a63b3f2152"},
-    {file = "aws_sam_cli-1.53.0-py3-none-any.whl", hash = "sha256:e707afc2f307c3d5fd7434584cdc97dfb256d3a0b64245bdcbb770a3221082b5"},
+    {file = "aws-sam-cli-1.55.0.tar.gz", hash = "sha256:c97256e309893c11c69a9475ae4bcd349f3d9057a2d870248d892f25a95fdb39"},
+    {file = "aws_sam_cli-1.55.0-py3-none-any.whl", hash = "sha256:6f03513849c441ded378906c194dbfa496657bc2326f9abc6716a6dc4592c5fb"},
 ]
 aws-sam-translator = [
-    {file = "aws-sam-translator-1.46.0.tar.gz", hash = "sha256:53ed4cbabf8b9247c1be9c5f47fcfc2764578f55b12e7fe24b9bc41d6fce47cc"},
-    {file = "aws_sam_translator-1.46.0-py2-none-any.whl", hash = "sha256:03cb83135c98b1c47bf2b3c15507808c7e06d4717a3ca3da1cee6e7ebcb5282b"},
-    {file = "aws_sam_translator-1.46.0-py3-none-any.whl", hash = "sha256:095d1c8b9cb7fdaec6ff70914f8ae1269f14d91594b9f452b63548425b3de93b"},
+    {file = "aws-sam-translator-1.50.0.tar.gz", hash = "sha256:85bea2739e1b4a61b3e4add8a12f727d7a8e459e3da195dfd0cd2e756be054ec"},
+    {file = "aws_sam_translator-1.50.0-py2-none-any.whl", hash = "sha256:09668d12b5d330412421d30d4a8e826da6fe06f5a451f771c3b37f48f1b25889"},
+    {file = "aws_sam_translator-1.50.0-py3-none-any.whl", hash = "sha256:d375e9333c0262ed74b6d7ae90938060713ab17341f4e06c5cdbfd755902d9b4"},
 ]
 backcall = [
     {file = "backcall-0.2.0-py2.py3-none-any.whl", hash = "sha256:fbbce6a29f263178a1f7915c1940bde0ec2b2a967566fe1c65c1dfb7422bd255"},
