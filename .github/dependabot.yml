@@ -18,3 +18,10 @@ updates:
       - "yuokada"
 #     labels:
 #       - "pip dependencies"
+    ignore:
+      - dependency-name: "botocore"
+      - dependency-name: "mistune"
+      - dependency-name: "urllib3"
+      - dependency-name: "cryptography"
+      - dependency-name: "paramiko"
+      - dependency-name: "rsa"
