@@ -78,7 +78,7 @@ tests-no-zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympler", "p
 
 [[package]]
 name = "aws-lambda-builders"
-version = "1.18.0"
+version = "1.23.0"
 description = "Python library to compile, build & package AWS Lambda functions for several runtimes & frameworks."
 category = "dev"
 optional = false
@@ -93,24 +93,24 @@ dev = ["backports.tempfile (==1.0)", "black (==22.3.0)", "coverage (==5.3)", "fl
 
 [[package]]
 name = "aws-sam-cli"
-version = "1.55.0"
+version = "1.65.0"
 description = "AWS SAM CLI is a CLI tool for local development and testing of Serverless applications"
 category = "dev"
 optional = false
 python-versions = ">=3.7, <=4.0, !=4.0"
 
 [package.dependencies]
-aws-lambda-builders = "1.18.0"
-aws-sam-translator = "1.50.0"
+aws-lambda-builders = "1.23.0"
+aws-sam-translator = "1.54.0"
 boto3 = ">=1.19.5,<2.0.0"
 chevron = ">=0.12,<1.0"
-click = ">=7.1,<8.0"
+click = ">=8.0,<9.0"
 cookiecutter = ">=2.1.1,<2.2.0"
 dateparser = ">=1.0,<2.0"
 docker = ">=4.2.0,<4.3.0"
-Flask = ">=1.1.4,<1.2.0"
+Flask = "<2.1"
 jmespath = ">=0.10.0,<0.11.0"
-MarkupSafe = "2.0.1"
+pyopenssl = "22.0.0"
 PyYAML = ">=5.3,<6.0"
 regex = "2021.9.30"
 requests = "2.25.1"
@@ -119,14 +119,15 @@ tomlkit = "0.7.2"
 typing-extensions = "3.10.0.0"
 tzlocal = "3.0"
 watchdog = "2.1.2"
+Werkzeug = "<2.1"
 
 [package.extras]
-dev = ["black (==21.10b0)", "boto3-stubs[apigateway,cloudformation,ecr,iam,lambda,s3,schemas,secretsmanager,signer,stepfunctions,sts,xray] (==1.21.21)", "coverage (==5.3)", "mypy (==0.790)", "parameterized (==0.7.4)", "psutil (==5.9.0)", "pylint (>=2.13.0,<3)", "pytest (==6.1.1)", "pytest-cov (==2.10.1)", "pytest-forked (==1.3.0)", "pytest-rerunfailures (==9.1.1)", "pytest-timeout (==1.4.2)", "pytest-xdist (==2.1.0)"]
+dev = ["black (==22.6.0)", "boto3-stubs[apigateway,cloudformation,ecr,iam,lambda,s3,schemas,secretsmanager,signer,stepfunctions,sts,xray] (==1.21.21)", "coverage (==5.3)", "mypy (==0.790)", "parameterized (==0.7.4)", "psutil (==5.9.0)", "pylint (>=2.13.0,<3)", "pytest (==6.1.1)", "pytest-cov (==2.10.1)", "pytest-forked (==1.3.0)", "pytest-json-report (==1.5.0)", "pytest-rerunfailures (==9.1.1)", "pytest-timeout (==1.4.2)", "pytest-xdist (==2.1.0)"]
 pre-dev = ["pylint (>=2.13.0,<3)"]
 
 [[package]]
 name = "aws-sam-translator"
-version = "1.50.0"
+version = "1.54.0"
 description = "AWS SAM Translator is a library that transform SAM templates into AWS CloudFormation templates"
 category = "dev"
 optional = false
@@ -137,7 +138,7 @@ boto3 = ">=1.19.5,<2.0.0"
 jsonschema = ">=3.2,<4.0"
 
 [package.extras]
-dev = ["black (==20.8b1)", "boto3 (>=1.23,<2)", "click (>=7.1,<8.0)", "coverage (>=5.3,<6.0)", "dateparser (>=0.7,<1.0)", "docopt (>=0.6.2,<0.7.0)", "flake8 (>=3.8.4,<3.9.0)", "parameterized (>=0.7.4,<0.8.0)", "pylint (>=2.9.0,<2.10.0)", "pytest (>=6.2.5,<6.3.0)", "pytest-cov (>=2.10.1,<2.11.0)", "pytest-env (>=0.6.2,<0.7.0)", "pytest-xdist (>=2.5,<3.0)", "pyyaml (>=5.4,<6.0)", "requests (>=2.24.0,<2.25.0)", "tenacity (>=7.0.0,<7.1.0)", "tox (>=3.24,<4.0)"]
+dev = ["black (==20.8b1)", "boto3 (>=1.23,<2)", "boto3-stubs[appconfig,serverlessrepo] (>=1.19.5,<2.0.0)", "click (>=7.1,<8.0)", "coverage (>=5.3,<6.0)", "dateparser (>=0.7,<1.0)", "docopt (>=0.6.2,<0.7.0)", "flake8 (>=3.8.4,<3.9.0)", "mypy (==0.971)", "parameterized (>=0.7.4,<0.8.0)", "pylint (>=2.15.0,<2.16.0)", "pytest (>=6.2.5,<6.3.0)", "pytest-cov (>=2.10.1,<2.11.0)", "pytest-env (>=0.6.2,<0.7.0)", "pytest-rerunfailures (>=9.1.1,<9.2.0)", "pytest-xdist (>=2.5,<3.0)", "pyyaml (>=5.4,<6.0)", "requests (>=2.24.0,<2.25.0)", "ruamel.yaml (==0.17.21)", "tenacity (>=7.0.0,<7.1.0)", "tox (>=3.24,<4.0)", "types-PyYAML (>=5.4,<6.0)", "types-jsonschema (>=3.2,<4.0)"]
 
 [[package]]
 name = "backcall"
@@ -258,11 +259,14 @@ python-versions = "*"
 
 [[package]]
 name = "click"
-version = "7.1.2"
+version = "8.1.3"
 description = "Composable command line interface toolkit"
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+python-versions = ">=3.7"
+
+[package.dependencies]
+colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "colorama"
@@ -288,6 +292,25 @@ jinja2-time = ">=0.2.0"
 python-slugify = ">=4.0.0"
 pyyaml = ">=5.3.1"
 requests = ">=2.23.0"
+
+[[package]]
+name = "cryptography"
+version = "38.0.3"
+description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+cffi = ">=1.12"
+
+[package.extras]
+docs = ["sphinx (>=1.6.5,!=1.8.0,!=3.1.0,!=3.1.1)", "sphinx-rtd-theme"]
+docstest = ["pyenchant (>=1.6.11)", "sphinxcontrib-spelling (>=4.0.1)", "twine (>=1.12.0)"]
+pep8test = ["black", "flake8", "flake8-import-order", "pep8-naming"]
+sdist = ["setuptools-rust (>=0.11.4)"]
+ssh = ["bcrypt (>=3.1.5)"]
+test = ["hypothesis (>=1.11.4,!=3.79.2)", "iso8601", "pretend", "pytest (>=6.2.0)", "pytest-benchmark", "pytest-cov", "pytest-subtests", "pytest-xdist", "pytz"]
 
 [[package]]
 name = "dateparser"
@@ -359,17 +382,6 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
-name = "exceptiongroup"
-version = "1.0.0"
-description = "Backport of PEP 654 (exception groups)"
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-
-[package.extras]
-test = ["pytest (>=6)"]
-
-[[package]]
 name = "executing"
 version = "0.9.1"
 description = "Get the currently executing AST node of a frame, and other information"
@@ -390,17 +402,17 @@ devel = ["colorama", "json-spec", "jsonschema", "pylint", "pytest", "pytest-benc
 
 [[package]]
 name = "flask"
-version = "1.1.4"
+version = "1.1.2"
 description = "A simple framework for building complex web applications."
 category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.dependencies]
-click = ">=5.1,<8.0"
-itsdangerous = ">=0.24,<2.0"
-Jinja2 = ">=2.10.1,<3.0"
-Werkzeug = ">=0.15,<2.0"
+click = ">=5.1"
+itsdangerous = ">=0.24"
+Jinja2 = ">=2.10.1"
+Werkzeug = ">=0.15"
 
 [package.extras]
 dev = ["coverage", "pallets-sphinx-themes", "pytest", "sphinx", "sphinx-issues", "sphinxcontrib-log-cabinet", "tox"]
@@ -902,6 +914,21 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "pyopenssl"
+version = "22.0.0"
+description = "Python wrapper module around the OpenSSL library"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+cryptography = ">=35.0"
+
+[package.extras]
+docs = ["sphinx", "sphinx-rtd-theme"]
+test = ["flaky", "pretend", "pytest (>=3.0.1)"]
+
+[[package]]
 name = "pyparsing"
 version = "3.0.6"
 description = "Python parsing module"
@@ -942,11 +969,9 @@ python-versions = ">=3.7"
 [package.dependencies]
 attrs = ">=19.2.0"
 colorama = {version = "*", markers = "sys_platform == \"win32\""}
-exceptiongroup = {version = ">=1.0.0rc8", markers = "python_version < \"3.11\""}
 iniconfig = "*"
 packaging = "*"
 pluggy = ">=0.12,<2.0"
-tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 
 [package.extras]
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
@@ -1195,14 +1220,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "tomli"
-version = "2.0.1"
-description = "A lil' TOML parser"
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-
-[[package]]
 name = "tomlkit"
 version = "0.7.2"
 description = "Style preserving TOML library"
@@ -1337,8 +1354,8 @@ test = ["pytest (>=3.0.0)", "pytest-cov"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.9"
-content-hash = "d69de99d0ffa49f666769813a55ebd8800515b1cc2a26aa2ccc9f7e2be77bbe5"
+python-versions = "~3.11"
+content-hash = "6763030421c6f082f35109465fd5700c88ac8cf4805b14559185dbb3b54b8d7c"
 
 [metadata.files]
 appnope = [
@@ -1385,18 +1402,17 @@ attrs = [
     {file = "attrs-21.2.0.tar.gz", hash = "sha256:ef6aaac3ca6cd92904cdd0d83f629a15f18053ec84e6432106f7a4d04ae4f5fb"},
 ]
 aws-lambda-builders = [
-    {file = "aws_lambda_builders-1.18.0-py2-none-any.whl", hash = "sha256:c5235699d36b8edda7e649fbc3a23ed868eda1e15c4a83528df33939bdb75754"},
-    {file = "aws_lambda_builders-1.18.0-py3-none-any.whl", hash = "sha256:555c1bb72bab633deeb806cc347b40ed865d63166e536c89ff71f0ba739577b1"},
-    {file = "aws_lambda_builders-1.18.0.tar.gz", hash = "sha256:c0bd4b4288f0aa9cba27493065f5fb986425b5b49620b93a391620403eeb97e0"},
+    {file = "aws_lambda_builders-1.23.0-py3-none-any.whl", hash = "sha256:f0a857d68249c7cbeb2569c6acd15fea0956b3f64f6053bf8b33e165fae5d85a"},
+    {file = "aws_lambda_builders-1.23.0.tar.gz", hash = "sha256:36fb732665aac617578a344116f85d061588421b854038b163ba1a380f5ed0f9"},
 ]
 aws-sam-cli = [
-    {file = "aws-sam-cli-1.55.0.tar.gz", hash = "sha256:c97256e309893c11c69a9475ae4bcd349f3d9057a2d870248d892f25a95fdb39"},
-    {file = "aws_sam_cli-1.55.0-py3-none-any.whl", hash = "sha256:6f03513849c441ded378906c194dbfa496657bc2326f9abc6716a6dc4592c5fb"},
+    {file = "aws-sam-cli-1.65.0.tar.gz", hash = "sha256:499d2855bcb8e09fb5adb94877c426531781acf10433daad99ad31336a14fd31"},
+    {file = "aws_sam_cli-1.65.0-py3-none-any.whl", hash = "sha256:bbf1e89770759b0943be96d62809280e488523b6775a892f6859353ce543867e"},
 ]
 aws-sam-translator = [
-    {file = "aws-sam-translator-1.50.0.tar.gz", hash = "sha256:85bea2739e1b4a61b3e4add8a12f727d7a8e459e3da195dfd0cd2e756be054ec"},
-    {file = "aws_sam_translator-1.50.0-py2-none-any.whl", hash = "sha256:09668d12b5d330412421d30d4a8e826da6fe06f5a451f771c3b37f48f1b25889"},
-    {file = "aws_sam_translator-1.50.0-py3-none-any.whl", hash = "sha256:d375e9333c0262ed74b6d7ae90938060713ab17341f4e06c5cdbfd755902d9b4"},
+    {file = "aws-sam-translator-1.54.0.tar.gz", hash = "sha256:a3ae79f1f2d430f5ade4d245165d5612414233f540b471d170f1aab95c3713a6"},
+    {file = "aws_sam_translator-1.54.0-py2-none-any.whl", hash = "sha256:1bb4abb197e6de3f935425e65f67d14f47eb620d984e9de963b666cc9deb66e4"},
+    {file = "aws_sam_translator-1.54.0-py3-none-any.whl", hash = "sha256:10d6771ebbe9107a0ddb756ccffd68ba81d885ef2eace80358a098566e6abaf1"},
 ]
 backcall = [
     {file = "backcall-0.2.0-py2.py3-none-any.whl", hash = "sha256:fbbce6a29f263178a1f7915c1940bde0ec2b2a967566fe1c65c1dfb7422bd255"},
@@ -1501,8 +1517,8 @@ chevron = [
     {file = "chevron-0.14.0.tar.gz", hash = "sha256:87613aafdf6d77b6a90ff073165a61ae5086e21ad49057aa0e53681601800ebf"},
 ]
 click = [
-    {file = "click-7.1.2-py2.py3-none-any.whl", hash = "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc"},
-    {file = "click-7.1.2.tar.gz", hash = "sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a"},
+    {file = "click-8.1.3-py3-none-any.whl", hash = "sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48"},
+    {file = "click-8.1.3.tar.gz", hash = "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"},
 ]
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
@@ -1511,6 +1527,34 @@ colorama = [
 cookiecutter = [
     {file = "cookiecutter-2.1.1-py2.py3-none-any.whl", hash = "sha256:9f3ab027cec4f70916e28f03470bdb41e637a3ad354b4d65c765d93aad160022"},
     {file = "cookiecutter-2.1.1.tar.gz", hash = "sha256:f3982be8d9c53dac1261864013fdec7f83afd2e42ede6f6dd069c5e149c540d5"},
+]
+cryptography = [
+    {file = "cryptography-38.0.3-cp36-abi3-macosx_10_10_universal2.whl", hash = "sha256:984fe150f350a3c91e84de405fe49e688aa6092b3525f407a18b9646f6612320"},
+    {file = "cryptography-38.0.3-cp36-abi3-macosx_10_10_x86_64.whl", hash = "sha256:ed7b00096790213e09eb11c97cc6e2b757f15f3d2f85833cd2d3ec3fe37c1722"},
+    {file = "cryptography-38.0.3-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.manylinux_2_24_aarch64.whl", hash = "sha256:bbf203f1a814007ce24bd4d51362991d5cb90ba0c177a9c08825f2cc304d871f"},
+    {file = "cryptography-38.0.3-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:554bec92ee7d1e9d10ded2f7e92a5d70c1f74ba9524947c0ba0c850c7b011828"},
+    {file = "cryptography-38.0.3-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b1b52c9e5f8aa2b802d48bd693190341fae201ea51c7a167d69fc48b60e8a959"},
+    {file = "cryptography-38.0.3-cp36-abi3-manylinux_2_24_x86_64.whl", hash = "sha256:728f2694fa743a996d7784a6194da430f197d5c58e2f4e278612b359f455e4a2"},
+    {file = "cryptography-38.0.3-cp36-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:dfb4f4dd568de1b6af9f4cda334adf7d72cf5bc052516e1b2608b683375dd95c"},
+    {file = "cryptography-38.0.3-cp36-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:5419a127426084933076132d317911e3c6eb77568a1ce23c3ac1e12d111e61e0"},
+    {file = "cryptography-38.0.3-cp36-abi3-musllinux_1_1_aarch64.whl", hash = "sha256:9b24bcff7853ed18a63cfb0c2b008936a9554af24af2fb146e16d8e1aed75748"},
+    {file = "cryptography-38.0.3-cp36-abi3-musllinux_1_1_x86_64.whl", hash = "sha256:25c1d1f19729fb09d42e06b4bf9895212292cb27bb50229f5aa64d039ab29146"},
+    {file = "cryptography-38.0.3-cp36-abi3-win32.whl", hash = "sha256:7f836217000342d448e1c9a342e9163149e45d5b5eca76a30e84503a5a96cab0"},
+    {file = "cryptography-38.0.3-cp36-abi3-win_amd64.whl", hash = "sha256:c46837ea467ed1efea562bbeb543994c2d1f6e800785bd5a2c98bc096f5cb220"},
+    {file = "cryptography-38.0.3-pp37-pypy37_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:06fc3cc7b6f6cca87bd56ec80a580c88f1da5306f505876a71c8cfa7050257dd"},
+    {file = "cryptography-38.0.3-pp37-pypy37_pp73-manylinux_2_24_x86_64.whl", hash = "sha256:65535bc550b70bd6271984d9863a37741352b4aad6fb1b3344a54e6950249b55"},
+    {file = "cryptography-38.0.3-pp37-pypy37_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:5e89468fbd2fcd733b5899333bc54d0d06c80e04cd23d8c6f3e0542358c6060b"},
+    {file = "cryptography-38.0.3-pp38-pypy38_pp73-macosx_10_10_x86_64.whl", hash = "sha256:6ab9516b85bebe7aa83f309bacc5f44a61eeb90d0b4ec125d2d003ce41932d36"},
+    {file = "cryptography-38.0.3-pp38-pypy38_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:068147f32fa662c81aebab95c74679b401b12b57494872886eb5c1139250ec5d"},
+    {file = "cryptography-38.0.3-pp38-pypy38_pp73-manylinux_2_24_x86_64.whl", hash = "sha256:402852a0aea73833d982cabb6d0c3bb582c15483d29fb7085ef2c42bfa7e38d7"},
+    {file = "cryptography-38.0.3-pp38-pypy38_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:b1b35d9d3a65542ed2e9d90115dfd16bbc027b3f07ee3304fc83580f26e43249"},
+    {file = "cryptography-38.0.3-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:6addc3b6d593cd980989261dc1cce38263c76954d758c3c94de51f1e010c9a50"},
+    {file = "cryptography-38.0.3-pp39-pypy39_pp73-macosx_10_10_x86_64.whl", hash = "sha256:be243c7e2bfcf6cc4cb350c0d5cdf15ca6383bbcb2a8ef51d3c9411a9d4386f0"},
+    {file = "cryptography-38.0.3-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:78cf5eefac2b52c10398a42765bfa981ce2372cbc0457e6bf9658f41ec3c41d8"},
+    {file = "cryptography-38.0.3-pp39-pypy39_pp73-manylinux_2_24_x86_64.whl", hash = "sha256:4e269dcd9b102c5a3d72be3c45d8ce20377b8076a43cbed6f660a1afe365e436"},
+    {file = "cryptography-38.0.3-pp39-pypy39_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:8d41a46251bf0634e21fac50ffd643216ccecfaf3701a063257fe0b2be1b6548"},
+    {file = "cryptography-38.0.3-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:785e4056b5a8b28f05a533fab69febf5004458e20dad7e2e13a3120d8ecec75a"},
+    {file = "cryptography-38.0.3.tar.gz", hash = "sha256:bfbe6ee19615b07a98b1d2287d6a6073f734735b49ee45b11324d85efc4d5cbd"},
 ]
 dateparser = [
     {file = "dateparser-1.1.0-py2.py3-none-any.whl", hash = "sha256:fec344db1f73d005182e214c0ff27313c748bbe0c1638ce9d48a809ddfdab2a0"},
@@ -1552,10 +1596,6 @@ entrypoints = [
     {file = "entrypoints-0.4-py3-none-any.whl", hash = "sha256:f174b5ff827504fd3cd97cc3f8649f3693f51538c7e4bdf3ef002c8429d42f9f"},
     {file = "entrypoints-0.4.tar.gz", hash = "sha256:b706eddaa9218a19ebcd67b56818f05bb27589b1ca9e8d797b74affad4ccacd4"},
 ]
-exceptiongroup = [
-    {file = "exceptiongroup-1.0.0-py3-none-any.whl", hash = "sha256:2ac84b496be68464a2da60da518af3785fff8b7ec0d090a581604bc870bdee41"},
-    {file = "exceptiongroup-1.0.0.tar.gz", hash = "sha256:affbabf13fb6e98988c38d9c5650e701569fe3c1de3233cfb61c5f33774690ad"},
-]
 executing = [
     {file = "executing-0.9.1-py2.py3-none-any.whl", hash = "sha256:4ce4d6082d99361c0231fc31ac1a0f56979363cc6819de0b1410784f99e49105"},
     {file = "executing-0.9.1.tar.gz", hash = "sha256:ea278e2cf90cbbacd24f1080dd1f0ac25b71b2e21f50ab439b7ba45dd3195587"},
@@ -1565,8 +1605,8 @@ fastjsonschema = [
     {file = "fastjsonschema-2.16.1.tar.gz", hash = "sha256:d6fa3ffbe719768d70e298b9fb847484e2bdfdb7241ed052b8d57a9294a8c334"},
 ]
 flask = [
-    {file = "Flask-1.1.4-py2.py3-none-any.whl", hash = "sha256:c34f04500f2cbbea882b1acb02002ad6fe6b7ffa64a6164577995657f50aed22"},
-    {file = "Flask-1.1.4.tar.gz", hash = "sha256:0fbeb6180d383a9186d0d6ed954e0042ad9f18e0e8de088b2b419d526927d196"},
+    {file = "Flask-1.1.2-py2.py3-none-any.whl", hash = "sha256:8a4fdd8936eba2512e9c85df320a37e694c93945b33ef33c89946a340a238557"},
+    {file = "Flask-1.1.2.tar.gz", hash = "sha256:4efa1ae2d7c9865af48986de8aeb8504bf32c7f3d6fdc9353d34b21f4b127060"},
 ]
 future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
@@ -1815,6 +1855,10 @@ pycparser = [
 pygments = [
     {file = "Pygments-2.12.0-py3-none-any.whl", hash = "sha256:dc9c10fb40944260f6ed4c688ece0cd2048414940f1cea51b8b226318411c519"},
     {file = "Pygments-2.12.0.tar.gz", hash = "sha256:5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb"},
+]
+pyopenssl = [
+    {file = "pyOpenSSL-22.0.0-py2.py3-none-any.whl", hash = "sha256:ea252b38c87425b64116f808355e8da644ef9b07e429398bfece610f893ee2e0"},
+    {file = "pyOpenSSL-22.0.0.tar.gz", hash = "sha256:660b1b1425aac4a1bea1d94168a85d99f0b3144c869dd4390d27629d0087f1bf"},
 ]
 pyparsing = [
     {file = "pyparsing-3.0.6-py3-none-any.whl", hash = "sha256:04ff808a5b90911829c55c4e26f75fa5ca8a2f5f36aa3a51f68e27033341d3e4"},
@@ -2066,10 +2110,6 @@ testpath = [
 text-unidecode = [
     {file = "text-unidecode-1.3.tar.gz", hash = "sha256:bad6603bb14d279193107714b288be206cac565dfa49aa5b105294dd5c4aab93"},
     {file = "text_unidecode-1.3-py2.py3-none-any.whl", hash = "sha256:1311f10e8b895935241623731c2ba64f4c455287888b18189350b67134a822e8"},
-]
-tomli = [
-    {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
-    {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
 ]
 tomlkit = [
     {file = "tomlkit-0.7.2-py2.py3-none-any.whl", hash = "sha256:173ad840fa5d2aac140528ca1933c29791b79a374a0861a80347f42ec9328117"},
