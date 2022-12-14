@@ -16,10 +16,10 @@ updates:
     open-pull-requests-limit: 5
     reviewers:
       - "yuokada"
-    ignore:
-      - dependency-name: "botocore"
-      - dependency-name: "mistune"
-      - dependency-name: "urllib3"
-      - dependency-name: "cryptography"
-      - dependency-name: "paramiko"
-      - dependency-name: "rsa"
+    # ignore:
+    #   - dependency-name: "botocore"
+    #   - dependency-name: "mistune"
+    #   - dependency-name: "urllib3"
+    #   - dependency-name: "cryptography"
+    #   - dependency-name: "paramiko"
+    #   - dependency-name: "rsa"
