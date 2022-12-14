@@ -1,3 +1,4 @@
+---
 # see: https://docs.github.com/en/code-security/dependabot/dependabot-security-updates
 # see: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#package-ecosystem
 version: 2
@@ -5,7 +6,6 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      # Check for updates to GitHub Actions every weekday
       interval: "monthly"
     reviewers:
       - "yuokada"
@@ -13,11 +13,9 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 2
+    open-pull-requests-limit: 5
     reviewers:
       - "yuokada"
-#     labels:
-#       - "pip dependencies"
     ignore:
       - dependency-name: "botocore"
       - dependency-name: "mistune"
