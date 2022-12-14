@@ -31,7 +31,9 @@ jobs:
         # ADD YOUR CUSTOM DEPENDENCY UPGRADE COMMANDS BELOW
         run: |
           pip install -U poetry
+          poetry env info
           poetry update
+          make update_requirements_txt
       # END PYTHON DEPENDENCIES
       - name: Detect changes
         id: changes
