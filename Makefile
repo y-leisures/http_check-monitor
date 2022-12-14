@@ -12,3 +12,7 @@ sam_auto_deploy:
 
 sam_delete:
 	poetry run sam delete --debug --region ap-northeast-1
+
+update_requirements_txt:
+	poetry export -f requirements.txt --output requirements.txt         --without-hashes
+	poetry export -f requirements.txt --output layers/requirements.txt  --without-hashes
