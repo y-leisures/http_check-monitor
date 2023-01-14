@@ -1,6 +1,7 @@
 import dataclasses
 import json
 import os
+import uuid
 from datetime import datetime
 from urllib.error import HTTPError
 
@@ -10,8 +11,10 @@ import twitter
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
-# from boto3.dynamodb.conditions import Key
 from common import get_secret
+
+S3_BUCKET = os.getenv('S3_BUCKET', 'y-bms-tokyo')
+OBJECT_KEY_ON_S3 = os.getenv('OBJECT_KEY_ON_S3', 'monitor.db')
 
 
 @dataclasses.dataclass
@@ -20,6 +23,46 @@ class FailureEven:
     failing_url: str
     completionTime: int = 0
     resolved: bool = False
+
+
+class s3objectHandler(object):
+    # see: https://stackoverflow.com/questions/3774328/implementing-use-of-with-object-as-f-in-custom-class-in-python
+
+    def __init__(self, bucket: str, object_file: str):
+        self.bucket = bucket
+        self.object_file = object_file
+        self.tmp_filename = self._generate_tmp_filename()
+        self._client = boto3.client('s3')
+
+    def __enter__(self):
+        self.fd = self._fetch_file()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._put_file()
+
+    def _fetch_file(self):
+        response: dict = self._client.get_object(Bucket=self.bucket, Key=self.object_file)
+        if 'HTTPStatusCode' in response and response['HTTPStatusCode'] == 200:
+            if 'Body' in response:
+                contents = response['Body'].read()
+                with open(self.tmp_filename, 'wb') as fh:
+                    fh.write(contents)
+                return open(self.tmp_filename, 'r+b')
+        raise RuntimeError(f'Failed to open(s3://{self.bucket}/{self.object_file})')
+
+    def _put_file(self):
+        response = self._client.put_object(
+            Body=self.tmp_filename,
+            Bucket=self.bucket, Key=self.object_file
+        )
+        if 'HTTPStatusCode' in response and response['HTTPStatusCode'] == 200:
+            return
+        raise RuntimeError(f'Failed to put (s3://{self.bucket}/{self.object_file})')
+
+    @staticmethod
+    def _generate_tmp_filename() -> str:
+        return str(uuid.uuid4())
 
 
 def check_health(url: object, timeout: int = 30) -> bool:
