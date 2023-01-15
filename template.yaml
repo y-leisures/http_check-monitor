@@ -12,7 +12,7 @@ Metadata:
     SpdxLicenseId: Apache-2.0
     Author: Yukihiro Okada
     LicenseUrl: LICENSE
-    ReadmeUrl: README.md
+    ReadmeUrl: README-development.md
     Labels: ["bms", "private"]
     SemanticVersion: 0.1.0
     HomePageUrl: https://github.com/y-leisures/http_check-monitor
