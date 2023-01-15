@@ -89,14 +89,6 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/*:*"
-        - PolicyName: AllowToGetSecretValue  # NOTE: Deprecated
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - secretsmanager:GetSecretValue
-                Resource: "*"
         - PolicyName: AllowToHandleObjectOnS3
           PolicyDocument:
             Version: "2012-10-17"
