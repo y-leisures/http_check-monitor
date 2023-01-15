@@ -25,3 +25,4 @@ jobs:
         aws-region: ap-northeast-1
     - run: sam build --use-container
     - run: sam validate --lint --template-file template.yaml
+    - run: sam deploy --config-file samconfig.toml --template-file deploy-template.yaml --no-execute-changeset
