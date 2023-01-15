@@ -3,6 +3,7 @@ import json
 import os
 import sqlite3
 import uuid
+from collections import namedtuple
 from sqlite3 import Cursor
 from urllib.error import HTTPError
 
@@ -15,8 +16,6 @@ from notify_to_slack import notify_to_slack
 
 S3_BUCKET = os.getenv('S3_BUCKET', 'y-bms-tokyo')
 OBJECT_KEY_ON_S3 = os.getenv('OBJECT_KEY_ON_S3', 'http_monitor/monitor.db')
-
-from collections import namedtuple
 
 
 def namedtuple_factory(cursor, row):
@@ -82,6 +81,39 @@ class SqliteOnS3Handler(object):
         return '/tmp/' + str(uuid.uuid4())
 
 
+def execute_ddl_queries(cursor: Cursor) -> None:
+    queries = {
+        "current_status": """
+        CREATE TABLE IF NOT EXISTS current_status
+            (
+                id         INTEGER PRIMARY KEY,
+                status     VARCHAR  default 'up'              not null,
+                updated_at DATETIME default CURRENT_TIMESTAMP not null
+            )
+        """,
+        "status_history": """
+        CREATE TABLE IF NOT EXISTS status_history
+            (
+                id         INTEGER  primary key,
+                new_status VARCHAR  default 'up'              not null,
+                created_at DATETIME default CURRENT_TIMESTAMP not null
+            )
+        """,
+    }
+    for table, ddl in queries.items():
+        print("Execute the DDL for {}".format(table))
+        cursor.execute(ddl)
+    return
+
+
+def record_status_change(cursor: Cursor, new_status: str) -> None:
+    query = "INSERT INTO status_history (new_status) VALUES ('{}')".format(new_status)
+    response = cursor.execute(query)
+    if response.rowcount != 1:
+        raise RuntimeError('Fail to insert into status_history')
+    return
+
+
 def check_health(url: object, timeout: int = 30) -> bool:
     retries = Retry(total=5, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
     s = requests.session()
@@ -107,7 +139,7 @@ def record_failure_event(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_
         db.connection.row_factory = namedtuple_factory
         cursor: Cursor = db.connection.cursor()
 
-        # TODO: Execute DDL if necessary
+        execute_ddl_queries(cursor)
 
         # Fetch current status and then update the record
         current_status = cursor.execute('select * FROM current_status WHERE id = 1').fetchone()
@@ -117,6 +149,7 @@ def record_failure_event(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_
             response = cursor.execute(query)
             if response.rowcount != 1:
                 raise RuntimeError('Fail to update the record')
+            record_status_change(cursor, 'down')
         else:
             query = "UPDATE current_status SET updated_at = current_timestamp WHERE id = 1"
             response = cursor.execute(query)
@@ -152,7 +185,7 @@ def lambda_handler(event, context):
     if not result:
         record_failure_event()
         payload = {
-            "text": "{} is down! Please contact to administrator!".format(monitor_url),
+            "text": "{} is down! Please contact to administrators! ⚠️".format(monitor_url),
         }
         notify_to_slack(payload)
         return {
@@ -164,7 +197,7 @@ def lambda_handler(event, context):
             db.connection.row_factory = namedtuple_factory
             cursor: Cursor = db.connection.cursor()
 
-            # TODO: Execute DDL if necessary
+            execute_ddl_queries(cursor)
 
             # Fetch current status and then update the record
             current_status = cursor.execute('select * FROM current_status WHERE id = 1').fetchone()
@@ -172,10 +205,15 @@ def lambda_handler(event, context):
                 query = "UPDATE current_status SET updated_at = current_timestamp WHERE id = 1"
             else:
                 query = "UPDATE current_status SET status = 'up', updated_at = current_timestamp WHERE id = 1"
+                record_status_change(cursor, 'up')
+                payload = {
+                    "text": "{} is back to normal! ✅".format(monitor_url),
+                }
+                notify_to_slack(payload)
             response = cursor.execute(query)
             if response.rowcount != 1:
                 raise RuntimeError('Fail to update the record')
-            new_status = cursor.execute('select * FROM current_status WHERE id = 1').fetchone()
+            # new_status = cursor.execute('select * FROM current_status WHERE id = 1').fetchone()
             cursor.close()
 
         return {
