@@ -123,8 +123,6 @@ Resources:
     # see: https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html
     Type: AWS::SNS::Topic
     Properties:
-      # ContentBasedDeduplication: false
-      # DisplayName: String
       FifoTopic: false
       Subscription:
         - Endpoint: callistoiv+aws@gmail.com
@@ -134,7 +132,7 @@ Resources:
           Value: "false"
         - Key: sam
           Value: "true"
-      TopicName: !Sub "bms-${Stage}-monitoring"
+      TopicName: !Sub "bms-monitoring-${Stage}"
 
   BmsPythonLayer:
     Type: AWS::Serverless::LayerVersion
@@ -150,9 +148,10 @@ Resources:
   BmsCheckWebsitePeriodicallyFun:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub
-        - "bms-${Alias}-http-monitor"
-        - { "Alias": !FindInMap [StageMapping, !Ref Stage, Alias] }
+#      FunctionName: !Sub
+#        - "bms-${Alias}-http-monitor"
+#        - { "Alias": !FindInMap [StageMapping, !Ref Stage, Alias] }
+      FunctionName: !Sub "bms-http-monitor-${Stage}"
       CodeUri: check_website/
       Handler: app.lambda_handler
       Runtime: python3.9
@@ -170,6 +169,7 @@ Resources:
         Variables:
           MONITOR_URL: http://b-ms.info/
           MONITORING_TABLE: !Sub "bms-monitoring-events-${Stage}"
+          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
       # see: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-eventinvokeconfiguration.html
       EventInvokeConfig:
         # MaximumEventAgeInSeconds: 60
