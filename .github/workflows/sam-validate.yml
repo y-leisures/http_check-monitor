@@ -1,5 +1,5 @@
 # see: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/deploying-using-github.html
-name: deploy the application with github actions
+name: Validation & dry run
 
 on:
   push:
