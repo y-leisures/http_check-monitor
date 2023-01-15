@@ -57,6 +57,7 @@ Resources:
   BmsMonitoringLambdaRole:
     Type: AWS::IAM::Role
     Properties:
+      RoleName: !Sub "bms-http-monitoring-role-${Stage}"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/SecretsManagerReadWrite
         - arn:aws:iam::aws:policy/AmazonSNSFullAccess
