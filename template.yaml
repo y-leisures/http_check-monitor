@@ -70,13 +70,15 @@ Resources:
               Service: lambda.amazonaws.com
       Path: /
       Policies:
-        - PolicyName: AllowToCreateLogGroup
+        - PolicyName: AllowToManageLogGroup
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
               - Effect: Allow
                 Action:
                   - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
                 Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
         - PolicyName: AllowToSendLogToGroup
           PolicyDocument:
