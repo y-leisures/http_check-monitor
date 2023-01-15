@@ -3,17 +3,14 @@ import json
 import os
 import sqlite3
 import uuid
-from datetime import datetime
 from sqlite3 import Cursor
 from urllib.error import HTTPError
 
 import boto3
 import requests
-import twitter
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
-from common import get_secret
 from notify_to_slack import notify_to_slack
 
 S3_BUCKET = os.getenv('S3_BUCKET', 'y-bms-tokyo')
@@ -126,30 +123,6 @@ def record_failure_event(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_
             if response.rowcount != 1:
                 raise RuntimeError('Fail to update the record')
         cursor.close()
-
-
-@DeprecationWarning
-def main(monitor_url: str):
-    secrets = get_secret()
-    api = twitter.Api(
-        consumer_key=secrets['CONSUMER_KEY'], consumer_secret=secrets['CONSUMER_SECRET'],
-        access_token_key=secrets['ACCESS_TOKEN_KEY'], access_token_secret=secrets['ACCESS_TOKEN_SECRET']
-    )
-
-    MESSAGE_TEMPLATE = '[{}] {} is down now. Please reboot the server! @uokada'
-    message = MESSAGE_TEMPLATE.format(datetime.now().isoformat()[:19], monitor_url)
-    post_success = False
-    counter = 0
-    while post_success == False:
-        try:
-            result: twitter.Status = api.PostUpdate(status=message)
-            post_success = True
-        except twitter.error.TwitterError as te:
-            counter += 1
-            if counter >= 3:
-                # Give up the message post
-                post_success = True
-    return 0
 
 
 def lambda_handler(event, context):
