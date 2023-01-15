@@ -4,24 +4,26 @@ name: deploy the application with github actions
 on:
   push:
     branches:
-      - master
+    - master
     paths-ignore:
-      - notebooks/
-      - layers/
+    - notebooks/
+    - layers/
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-      - uses: aws-actions/setup-sam@v2
-      - uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-1
-      - run: sam build --use-container
-      - run: sam deploy --stack-name bms-monitor-development --no-confirm-changeset --no-fail-on-empty-changeset --tags 'Owner="Yukihiro Okada" service=bms-monitoring cdk=true repository=bms-monitor-sam'
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    - uses: aws-actions/setup-sam@v2
+    - uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-1
+    - run: sam build --use-container
+    - run: sam deploy --stack-name bms-monitor-development --no-confirm-changeset
+        --no-fail-on-empty-changeset --tags 'Owner="Yukihiro Okada" service=bms-monitoring
+        cdk=true repository=bms-monitor-sam'
