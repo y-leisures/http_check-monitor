@@ -169,6 +169,7 @@ Resources:
         Variables:
           MONITOR_URL: http://b-ms.info/
           MONITORING_TABLE: !Sub "bms-monitoring-events-${Stage}"
+          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
       # see: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-eventinvokeconfiguration.html
       EventInvokeConfig:
         # MaximumEventAgeInSeconds: 60
