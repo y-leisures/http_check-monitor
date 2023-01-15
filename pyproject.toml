@@ -8,6 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.9"
 boto3 = "^1.26.41"
+requests = "^2.25"
 
 [tool.poetry.dev-dependencies]
 aws-sam-cli = "^1.66.0"
