@@ -14,6 +14,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 from common import get_secret
+from notify_to_slack import notify_to_slack
 
 S3_BUCKET = os.getenv('S3_BUCKET', 'y-bms-tokyo')
 OBJECT_KEY_ON_S3 = os.getenv('OBJECT_KEY_ON_S3', 'http_monitor/monitor.db')
@@ -49,6 +50,8 @@ class SqliteOnS3Handler(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        self.connection.commit()
+        self.connection.close()
         self._put_file()
 
     def _fetch_file(self):
@@ -94,11 +97,15 @@ def check_health(url: object, timeout: int = 30) -> bool:
         resp = s.get(url, headers=headers, timeout=timeout)
         resp.raise_for_status()
         return True
-    except HTTPError as _:
+    except (HTTPError, ConnectionError) as e:
+        print(e)
+        return False
+    except Exception as e:
+        print(e)
         return False
 
 
-def record_failure_event2(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_ON_S3):
+def record_failure_event(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_ON_S3):
     with SqliteOnS3Handler(bucket=bucket, object_file=object_file) as db:
         db.connection.row_factory = namedtuple_factory
         cursor: Cursor = db.connection.cursor()
@@ -107,18 +114,21 @@ def record_failure_event2(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY
 
         # Fetch current status and then update the record
         current_status = cursor.execute('select * FROM current_status WHERE id = 1').fetchone()
+        print(current_status)
         if current_status.status == 'up':
-            query = "UPDATE current_status SET status = 'down', updated_at = DATETIME(current_timestamp) WHERE id = 1"
+            query = "UPDATE current_status SET status = 'down', updated_at = current_timestamp WHERE id = 1"
             response = cursor.execute(query)
             if response.rowcount != 1:
                 raise RuntimeError('Fail to update the record')
         else:
-            query = "UPDATE current_status SET updated_at = DATETIME(current_timestamp) WHERE id = 1"
+            query = "UPDATE current_status SET updated_at = current_timestamp WHERE id = 1"
             response = cursor.execute(query)
             if response.rowcount != 1:
                 raise RuntimeError('Fail to update the record')
+        cursor.close()
 
 
+@DeprecationWarning
 def main(monitor_url: str):
     secrets = get_secret()
     api = twitter.Api(
@@ -133,7 +143,6 @@ def main(monitor_url: str):
     while post_success == False:
         try:
             result: twitter.Status = api.PostUpdate(status=message)
-            # pprint(result.id)
             post_success = True
         except twitter.error.TwitterError as te:
             counter += 1
@@ -166,18 +175,16 @@ def lambda_handler(event, context):
     """
 
     monitor_url = os.getenv("MONITOR_URL")
-
     result: bool = check_health(monitor_url)
     if not result:
-        # record_failure_event(failing_url=monitor_url)
-        record_failure_event2()
-        # main(monitor_url=monitor_url)
+        record_failure_event()
+        payload = {
+            "text": "{} is down! Please contact to administrator!".format(monitor_url),
+        }
+        notify_to_slack(payload)
         return {
             "statusCode": 200,
-            "body": json.dumps({
-                "message": "{} is down! Please contact to administrator!".format(monitor_url),
-                # "location": ip.text.replace("\n", "")
-            }),
+            "body": json.dumps(payload),
         }
     else:
         with SqliteOnS3Handler(bucket=S3_BUCKET, object_file=OBJECT_KEY_ON_S3) as db:
@@ -189,17 +196,19 @@ def lambda_handler(event, context):
             # Fetch current status and then update the record
             current_status = cursor.execute('select * FROM current_status WHERE id = 1').fetchone()
             if current_status.status == 'up':
-                query = "UPDATE current_status SET updated_at = DATETIME(current_timestamp) WHERE id = 1"
+                query = "UPDATE current_status SET updated_at = current_timestamp WHERE id = 1"
             else:
-                query = "UPDATE current_status SET status = 'up', updated_at = DATETIME(current_timestamp) WHERE id = 1"
+                query = "UPDATE current_status SET status = 'up', updated_at = current_timestamp WHERE id = 1"
             response = cursor.execute(query)
             if response.rowcount != 1:
                 raise RuntimeError('Fail to update the record')
+            new_status = cursor.execute('select * FROM current_status WHERE id = 1').fetchone()
+            cursor.close()
 
         return {
             "statusCode": 200,
             "body": json.dumps({
-                "message": "{} is running!".format(monitor_url),
+                "text": "{} is running!".format(monitor_url),
                 # "location": ip.text.replace("\n", "")
             }),
         }
