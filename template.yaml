@@ -220,23 +220,6 @@ Resources:
       LogGroupName: !Sub /aws/lambda/${BmsCheckWebsitePeriodicallyFun}
       RetentionInDays: 30
 
-  BmsMonitoringRecordTable:
-    Type: AWS::Serverless::SimpleTable
-    Properties:
-      PrimaryKey:
-        Name: eventTime
-        Type: Number
-      ProvisionedThroughput:
-        ReadCapacityUnits: 1
-        WriteCapacityUnits: 1
-      # SSESpecification: SSESpecification
-      TableName: !Sub "bms-monitoring-events-${Stage}"
-      Tags:
-        cdk: "false"
-        sam: "true"
-        system: bms
-        repository: http_check-monitor
-
 # see: https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
 # see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html
 Outputs:
@@ -247,8 +230,6 @@ Outputs:
   BmsMonitoringLambdaRole:
     Value: !GetAtt BmsMonitoringLambdaRole.Arn
 
-  BmsMonitoringRecordTableName:
-    Value: !Ref BmsMonitoringRecordTable
   # BmsMonitoringSnsTopic:
   #   Description: "BmsMonitoringSnsTopic SNS Topic ARN"
   #   Value: !GetAtt BmsMonitoringSnsTopic.Arn
