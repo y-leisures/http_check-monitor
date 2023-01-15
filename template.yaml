@@ -164,10 +164,10 @@ Resources:
         # see: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-schedule.html
         # see: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-schedulev2.html
         Event1:
-          Type: ScheduleV2
+          Type: Schedule
           Properties:
             Name: !Sub "bms-http-monitor-scheduled-trigger-${Stage}"
-            ScheduleExpression: "rate(60 minutes)"
+            Schedule: "rate(60 minutes)"
       Environment:
         Variables:
           MONITOR_URL: http://b-ms.info/
