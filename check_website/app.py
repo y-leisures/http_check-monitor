@@ -98,15 +98,6 @@ def check_health(url: object, timeout: int = 30) -> bool:
         return False
 
 
-def record_failure_event(failing_url: str):
-    resource = boto3.resource('dynamodb')
-    table = resource.Table('bms-monitoring-events-development')
-
-    now = datetime.now().timestamp()
-    row = dataclasses.asdict(FailureEven(eventTime=int(now), failing_url=failing_url))
-    table.put_item(Item=row)
-
-
 def record_failure_event2(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_ON_S3):
     with SqliteOnS3Handler(bucket=bucket, object_file=object_file) as db:
         db.connection.row_factory = namedtuple_factory
