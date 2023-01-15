@@ -11,6 +11,6 @@ stack_name = "bms-monitor-development"
 
 [default.deploy]
 [default.deploy.parameters]
-capabilities = "CAPABILITY_IAM"
+capabilities = "CAPABILITY_IAM CAPABILITY_NAMED_IAM"
 confirm_changeset = true
 region = "ap-northeast-1"
