@@ -1,13 +1,13 @@
 # see: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/deploying-using-github.html
-name: deploy the application with github actions
+name: Validation & dry run
 
 on:
   push:
     branches:
     - master
-    paths-ignore:
-    - notebooks/
-    - layers/
+  pull_request:
+    branches:
+    - master
 
 jobs:
   deploy:
@@ -24,6 +24,8 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-northeast-1
     - run: sam build --use-container
-    - run: sam deploy --stack-name bms-monitor-development --no-confirm-changeset
-        --no-fail-on-empty-changeset --tags 'Owner="Yukihiro Okada" service=bms-monitoring
-        cdk=true repository=bms-monitor-sam'
+    - run: sam validate --lint --template-file template.yaml
+    - name: Execute dry-run
+      run: |
+        sam package --debug --config-file samconfig.toml --output-template-file deploy-template.yaml
+        sam deploy --config-file samconfig.toml --template-file deploy-template.yaml --no-execute-changeset

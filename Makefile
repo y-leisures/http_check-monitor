@@ -10,6 +10,9 @@ sam_deploy:
 sam_auto_deploy:
 	poetry run sam deploy --config-file samconfig.toml --template-file deploy-template.yaml --no-confirm-changeset
 
+sam_dry_run:
+	poetry run sam deploy --config-file samconfig.toml --template-file deploy-template.yaml --no-execute-changeset
+
 sam_delete:
 	poetry run sam delete --debug --region ap-northeast-1
 
