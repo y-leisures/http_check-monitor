@@ -37,6 +37,9 @@ Parameters:
       - production
     Default: development
     Description: Stage in which the application will be deployed. Allowed values [development, staging, production]
+  WebhookUrl:
+    Type: String
+    Description: "Slack web hook URL to notify to #dev-alerts"
 
 Mappings:
   StageMapping:
@@ -156,7 +159,7 @@ Resources:
         Variables:
           MONITOR_URL: http://b-ms.info/
           MONITORING_TABLE: !Sub "bms-monitoring-events-${Stage}"
-          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+          SLACK_WEBHOOK_URL: !Ref WebhookUrl
       # see: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-eventinvokeconfiguration.html
       EventInvokeConfig:
         MaximumRetryAttempts: 1

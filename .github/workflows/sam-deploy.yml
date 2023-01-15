@@ -31,6 +31,7 @@ jobs:
     - run: sam validate --lint --template-file template.yaml
     - run: sam deploy --stack-name bms-monitor-development --no-confirm-changeset
         --no-fail-on-empty-changeset --tags 'Owner="Yukihiro Okada" service=bms-monitoring cdk=true repository="https://github.com/y-leisures/http_check-monitor"'
+        --parameter-overrides "WebhookUrl=${{ secrets.SLACK_HOOK_URL }}"
 
   validation:
     if: contains(github.event_name, 'pull_request')
@@ -51,4 +52,5 @@ jobs:
     - name: Execute dry-run
       run: |
         sam package --debug --config-file samconfig.toml --output-template-file deploy-template.yaml
-        sam deploy --config-file samconfig.toml --template-file deploy-template.yaml --no-execute-changeset
+        sam deploy --config-file samconfig.toml --template-file deploy-template.yaml --no-execute-changeset \
+            --parameter-overrides "WebhookUrl=${{ secrets.SLACK_HOOK_URL }}"
