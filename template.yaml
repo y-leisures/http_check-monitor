@@ -13,7 +13,7 @@ Metadata:
     Author: Yukihiro Okada
     LicenseUrl: LICENSE
     ReadmeUrl: README-development.md
-    Labels: ["bms", "private"]
+    Labels: [ "bms", "private" ]
     SemanticVersion: 0.1.0
     HomePageUrl: https://github.com/y-leisures/http_check-monitor
     SourceCodeUrl: https://github.com/y-leisures/http_check-monitor
@@ -70,13 +70,15 @@ Resources:
               Service: lambda.amazonaws.com
       Path: /
       Policies:
-        - PolicyName: AllowToCreateLogGroup
+        - PolicyName: AllowToManageLogGroup
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
               - Effect: Allow
                 Action:
                   - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
                 Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
         - PolicyName: AllowToSendLogToGroup
           PolicyDocument:
@@ -140,9 +142,9 @@ Resources:
   BmsCheckWebsitePeriodicallyFun:
     Type: AWS::Serverless::Function
     Properties:
-#      FunctionName: !Sub
-#        - "bms-${Alias}-http-monitor"
-#        - { "Alias": !FindInMap [StageMapping, !Ref Stage, Alias] }
+      #      FunctionName: !Sub
+      #        - "bms-${Alias}-http-monitor"
+      #        - { "Alias": !FindInMap [StageMapping, !Ref Stage, Alias] }
       FunctionName: !Sub "bms-http-monitor-${Stage}"
       CodeUri: check_website/
       Handler: app.lambda_handler
