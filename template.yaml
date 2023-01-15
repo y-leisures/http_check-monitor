@@ -103,6 +103,21 @@ Resources:
                 Action:
                   - secretsmanager:GetSecretValue
                 Resource: "*"
+        - PolicyName: AllowToHandleObjectOnS3
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                Resource: "arn:aws:s3:::y-bms-tokyo/http_monitor/*"
+              - Effect: Allow
+                Action:
+                  - s3:GetBucketLocation
+                  - s3:ListBucket
+                  - s3:ListBucketMultipartUploads
+                Resource: "arn:aws:s3:::y-bms-tokyo"
         - PolicyName: AllowToAccessDynamoDBTables
           PolicyDocument:
             Version: "2012-10-17"
@@ -170,7 +185,8 @@ Resources:
       Runtime: python3.9
       Layers:
         - !Ref BmsPythonLayer
-      Role: arn:aws:iam::949140100595:role/service-role/monitor_bms-role-zswvtb9u
+      # Role: arn:aws:iam::949140100595:role/service-role/monitor_bms-role-zswvtb9u
+      Role: !GetAtt BmsMonitoringLambdaRole.Arn
       Events:
         # The length of "BmsCheckWebsitePeriodicallyFunCheckWebsiteScheduledEventLambdaTarget" is 71
         Event1:

@@ -1,8 +1,10 @@
 import dataclasses
 import json
 import os
+import sqlite3
 import uuid
 from datetime import datetime
+from sqlite3 import Cursor
 from urllib.error import HTTPError
 
 import boto3
@@ -14,7 +16,15 @@ from requests.packages.urllib3.util.retry import Retry
 from common import get_secret
 
 S3_BUCKET = os.getenv('S3_BUCKET', 'y-bms-tokyo')
-OBJECT_KEY_ON_S3 = os.getenv('OBJECT_KEY_ON_S3', 'monitor.db')
+OBJECT_KEY_ON_S3 = os.getenv('OBJECT_KEY_ON_S3', 'http_monitor/monitor.db')
+
+from collections import namedtuple
+
+
+def namedtuple_factory(cursor, row):
+    fields = [column[0] for column in cursor.description]
+    cls = namedtuple("Row", fields)
+    return cls._make(row)
 
 
 @dataclasses.dataclass
@@ -25,7 +35,7 @@ class FailureEven:
     resolved: bool = False
 
 
-class s3objectHandler(object):
+class SqliteOnS3Handler(object):
     # see: https://stackoverflow.com/questions/3774328/implementing-use-of-with-object-as-f-in-custom-class-in-python
 
     def __init__(self, bucket: str, object_file: str):
@@ -35,34 +45,41 @@ class s3objectHandler(object):
         self._client = boto3.client('s3')
 
     def __enter__(self):
-        self.fd = self._fetch_file()
+        self.connection = self._fetch_file()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._put_file()
 
     def _fetch_file(self):
-        response: dict = self._client.get_object(Bucket=self.bucket, Key=self.object_file)
-        if 'HTTPStatusCode' in response and response['HTTPStatusCode'] == 200:
+        try:
+            response: dict = self._client.get_object(Bucket=self.bucket, Key=self.object_file)
             if 'Body' in response:
                 contents = response['Body'].read()
                 with open(self.tmp_filename, 'wb') as fh:
                     fh.write(contents)
-                return open(self.tmp_filename, 'r+b')
-        raise RuntimeError(f'Failed to open(s3://{self.bucket}/{self.object_file})')
+                return sqlite3.connect(self.tmp_filename)
+        except RuntimeError as e:
+            print(e)
+            raise RuntimeError(f'Failed to open(s3://{self.bucket}/{self.object_file})')
 
     def _put_file(self):
-        response = self._client.put_object(
-            Body=self.tmp_filename,
-            Bucket=self.bucket, Key=self.object_file
-        )
-        if 'HTTPStatusCode' in response and response['HTTPStatusCode'] == 200:
+        with open(self.tmp_filename, 'rb') as fh:
+            response = self._client.put_object(
+                Body=fh.read(),
+                Bucket=self.bucket, Key=self.object_file
+            )
+        if 'ResponseMetadata' in response and \
+                'HTTPStatusCode' in response['ResponseMetadata'] and \
+                response['ResponseMetadata']['HTTPStatusCode'] == 200:
             return
-        raise RuntimeError(f'Failed to put (s3://{self.bucket}/{self.object_file})')
+        else:
+            print(response)
+            raise RuntimeError(f'Failed to put (s3://{self.bucket}/{self.object_file})')
 
     @staticmethod
     def _generate_tmp_filename() -> str:
-        return str(uuid.uuid4())
+        return '/tmp/' + str(uuid.uuid4())
 
 
 def check_health(url: object, timeout: int = 30) -> bool:
@@ -88,6 +105,27 @@ def record_failure_event(failing_url: str):
     now = datetime.now().timestamp()
     row = dataclasses.asdict(FailureEven(eventTime=int(now), failing_url=failing_url))
     table.put_item(Item=row)
+
+
+def record_failure_event2(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_ON_S3):
+    with SqliteOnS3Handler(bucket=bucket, object_file=object_file) as db:
+        db.connection.row_factory = namedtuple_factory
+        cursor: Cursor = db.connection.cursor()
+
+        # TODO: Execute DDL if necessary
+
+        # Fetch current status and then update the record
+        current_status = cursor.execute('select * FROM current_status WHERE id = 1').fetchone()
+        if current_status.status == 'up':
+            query = "UPDATE current_status SET status = 'down', updated_at = DATETIME(current_timestamp) WHERE id = 1"
+            response = cursor.execute(query)
+            if response.rowcount != 1:
+                raise RuntimeError('Fail to update the record')
+        else:
+            query = "UPDATE current_status SET updated_at = DATETIME(current_timestamp) WHERE id = 1"
+            response = cursor.execute(query)
+            if response.rowcount != 1:
+                raise RuntimeError('Fail to update the record')
 
 
 def main(monitor_url: str):
@@ -140,8 +178,9 @@ def lambda_handler(event, context):
 
     result: bool = check_health(monitor_url)
     if not result:
-        record_failure_event(failing_url=monitor_url)
-        main(monitor_url=monitor_url)
+        # record_failure_event(failing_url=monitor_url)
+        record_failure_event2()
+        # main(monitor_url=monitor_url)
         return {
             "statusCode": 200,
             "body": json.dumps({
@@ -150,6 +189,22 @@ def lambda_handler(event, context):
             }),
         }
     else:
+        with SqliteOnS3Handler(bucket=S3_BUCKET, object_file=OBJECT_KEY_ON_S3) as db:
+            db.connection.row_factory = namedtuple_factory
+            cursor: Cursor = db.connection.cursor()
+
+            # TODO: Execute DDL if necessary
+
+            # Fetch current status and then update the record
+            current_status = cursor.execute('select * FROM current_status WHERE id = 1').fetchone()
+            if current_status.status == 'up':
+                query = "UPDATE current_status SET updated_at = DATETIME(current_timestamp) WHERE id = 1"
+            else:
+                query = "UPDATE current_status SET status = 'up', updated_at = DATETIME(current_timestamp) WHERE id = 1"
+            response = cursor.execute(query)
+            if response.rowcount != 1:
+                raise RuntimeError('Fail to update the record')
+
         return {
             "statusCode": 200,
             "body": json.dumps({
