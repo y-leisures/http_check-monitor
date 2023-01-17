@@ -150,6 +150,13 @@ def record_failure_event(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_
             if response.rowcount != 1:
                 raise RuntimeError('Fail to update the record')
             record_status_change(cursor, 'down')
+
+            # Notify to slack
+            monitor_url = os.getenv("MONITOR_URL")
+            payload = {
+                "text": "{} is down! Please contact to administrators! ⚠️".format(monitor_url),
+            }
+            notify_to_slack(payload)
         else:
             query = "UPDATE current_status SET updated_at = current_timestamp WHERE id = 1"
             response = cursor.execute(query)
@@ -182,12 +189,11 @@ def lambda_handler(event, context):
 
     monitor_url = os.getenv("MONITOR_URL")
     result: bool = check_health(monitor_url)
-    if not result:
+    if not result:  # When the server is down
         record_failure_event()
         payload = {
             "text": "{} is down! Please contact to administrators! ⚠️".format(monitor_url),
         }
-        notify_to_slack(payload)
         return {
             "statusCode": 200,
             "body": json.dumps(payload),
