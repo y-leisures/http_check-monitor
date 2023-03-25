@@ -1,10 +1,3 @@
-# rules:
-#   E3001:
-#     enabled: true
-#     severity: error
-#   W:
-#     enabled: true
-#     severity: warning
-
+# see: https://github.com/aws-cloudformation/cfn-lint#config-file
 ignore_checks:
   - W7001
