@@ -1,0 +1,3 @@
+# see: https://github.com/aws-cloudformation/cfn-lint#config-file
+ignore_checks:
+  - W7001
