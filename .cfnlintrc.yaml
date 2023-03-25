@@ -1,0 +1,11 @@
+# rules:
+#   E3001:
+#     enabled: true
+#     severity: error
+#   W:
+#     enabled: true
+#     severity: warning
+
+ignore_checks:
+  - id: W7001
+    reason: This resource is not required for this use case
