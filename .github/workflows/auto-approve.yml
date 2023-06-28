@@ -5,7 +5,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  scala-steward:
+  auto-approve:
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
