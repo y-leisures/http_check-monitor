@@ -226,6 +226,6 @@ def lambda_handler(event, context):
             "statusCode": 200,
             "body": json.dumps({
                 "text": "{} is running!".format(monitor_url),
-                # "location": ip.text.replace("\n", "")
+                #  "location": ip.text.replace("\n", "")
             }),
         }
