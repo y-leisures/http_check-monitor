@@ -26,12 +26,6 @@ jobs:
           # changed_files=$(git diff --name-only master... | grep '\.py$' || true)
           echo "changed_files=$changed_files" >> $GITHUB_OUTPUT
         id: changed_files
-
-      - name: Print Changed Python Files
-        run: |
-          echo "Changed Python files:"
-          echo "${{ steps.changed_files.outputs.changed_files }}"
-
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -40,6 +34,11 @@ jobs:
           pip3 install -q -U pip
           pip3 install -q poetry
           poetry install
+      - name: Print Message
+        run: |
+          echo "How to fix CI failures"
+          echo "poetry run black       ${{ steps.changed_files.outputs.changed_files }}"
+          echo "poetry run ruff --fix  ${{ steps.changed_files.outputs.changed_files }}"
       - name: Run black and ruff
         run: |
           poetry run black --check --diff "${{ steps.changed_files.outputs.changed_files }}"
