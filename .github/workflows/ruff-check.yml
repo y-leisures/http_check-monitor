@@ -24,7 +24,7 @@ jobs:
           git fetch origin ${{ github.event.pull_request.base.sha }}
           changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep '\.py$' || true)
           # changed_files=$(git diff --name-only master... | grep '\.py$' || true)
-          echo "::set-output name=changed_files::$changed_files"
+          echo "changed_files=$changed_files" >> $GITHUB_OUTPUT
         id: changed_files
 
       - name: Print Changed Python Files
