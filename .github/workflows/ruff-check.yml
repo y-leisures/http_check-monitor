@@ -13,10 +13,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      # matrix:
-      #   python-version: ["3.9"]
     steps:
       - uses: actions/checkout@v2
       - name: List Changed Python Files
@@ -34,11 +30,13 @@ jobs:
           pip3 install -q -U pip
           pip3 install -q poetry
           poetry install
+        if: steps.changed_files.outputs.changed_files != ''
       - name: Print Message
         run: |
           echo "How to fix CI failures"
           echo "poetry run black       ${{ steps.changed_files.outputs.changed_files }}"
           echo "poetry run ruff --fix  ${{ steps.changed_files.outputs.changed_files }}"
+        if: steps.changed_files.outputs.changed_files != ''
       - name: Run black and ruff
         run: |
           poetry run black --check --diff "${{ steps.changed_files.outputs.changed_files }}"
