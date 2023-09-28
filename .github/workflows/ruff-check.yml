@@ -1,5 +1,5 @@
 ---
-name: ruff check
+name: python coding style check
 
 # on: [push, pull_request]
 on:
@@ -28,7 +28,7 @@ jobs:
         id: changed_files
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.9'
       - name: Install dependencies
         run: |
           pip3 install -q -U pip
