@@ -1,0 +1,46 @@
+---
+name: ruff check
+
+# on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: List Changed Python Files
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.sha }}
+          changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep '\.py$' || true)
+          # changed_files=$(git diff --name-only master... | grep '\.py$' || true)
+          echo "changed_files=$changed_files" >> $GITHUB_OUTPUT
+        id: changed_files
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip3 install -q -U pip
+          pip3 install -q poetry
+          poetry install
+      - name: Print Message
+        run: |
+          echo "How to fix CI failures"
+          echo "poetry run black       ${{ steps.changed_files.outputs.changed_files }}"
+          echo "poetry run ruff --fix  ${{ steps.changed_files.outputs.changed_files }}"
+      - name: Run black and ruff
+        run: |
+          poetry run black --check --diff "${{ steps.changed_files.outputs.changed_files }}"
+          poetry run ruff check           "${{ steps.changed_files.outputs.changed_files }}"
+        if: steps.changed_files.outputs.changed_files != ''

@@ -10,10 +10,27 @@ python = "^3.9"
 boto3 = "^1.26.41"
 requests = "^2.25"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 aws-sam-cli = "^1.66.0"
 pytest = "^7.2.0"
 notebook = "^7.0.3"
+ruff = "^0.0.291"
+black = "^23.9.1"
+
+[tool.ruff]
+# see: https://docs.astral.sh/ruff/configuration/#using-pyprojecttoml
+select  = ["I", "E", "W"]
+fixable = ["I", "E", "W"]
+
+line-length = 120
+
+# Assume Python 3.9
+target-version = "py39"
+
+[tool.black]
+target-version = ["py39"]
+line-length = 120
+skip-string-normalization = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -64,13 +64,12 @@ class SqliteOnS3Handler(object):
 
     def _put_file(self):
         with open(self.tmp_filename, 'rb') as fh:
-            response = self._client.put_object(
-                Body=fh.read(),
-                Bucket=self.bucket, Key=self.object_file
-            )
-        if 'ResponseMetadata' in response and \
-                'HTTPStatusCode' in response['ResponseMetadata'] and \
-                response['ResponseMetadata']['HTTPStatusCode'] == 200:
+            response = self._client.put_object(Body=fh.read(), Bucket=self.bucket, Key=self.object_file)
+        if (
+            'ResponseMetadata' in response
+            and 'HTTPStatusCode' in response['ResponseMetadata']
+            and response['ResponseMetadata']['HTTPStatusCode'] == 200
+        ):
             return
         else:
             print(response)
@@ -224,8 +223,10 @@ def lambda_handler(event, context):
 
         return {
             "statusCode": 200,
-            "body": json.dumps({
-                "text": "{} is running!".format(monitor_url),
-                # "location": ip.text.replace("\n", "")
-            }),
+            "body": json.dumps(
+                {
+                    "text": "{} is running!".format(monitor_url),
+                    #  "location": ip.text.replace("\n", "")
+                }
+            ),
         }
