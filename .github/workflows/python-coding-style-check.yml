@@ -11,7 +11,7 @@ on:
       - master
 
 jobs:
-  build:
+  check_files:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,6 +22,11 @@ jobs:
           # changed_files=$(git diff --name-only master... | grep '\.py$' || true)
           echo "changed_files=$changed_files" >> $GITHUB_OUTPUT
         id: changed_files
+
+  run_formatter:
+    needs: check_files
+    runs-on: ubuntu-latest
+    steps:        
       - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
