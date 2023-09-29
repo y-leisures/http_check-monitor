@@ -38,14 +38,15 @@ jobs:
           # changed_files=$(git diff --name-only master... | grep '\.py$' || true)
           echo "changed_files=$changed_files" >> $GITHUB_OUTPUT
         id: changed_files
+      - name: Install poetry
+        run: |
+          pip3 install -q poetry
       - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-          cache: 'pip'
+          cache: 'poetry'
       - name: Install dependencies
         run: |
-          pip3 install -q -U pip
-          pip3 install -q poetry
           poetry install
       - name: Print hint message
         run: |
