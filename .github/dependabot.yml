@@ -19,7 +19,7 @@ updates:
     ignore:
       # ignore all patch updates
       - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]      
+        update-types: ["version-update:semver-patch"]
     # ignore:
     #   - dependency-name: "botocore"
     #   - dependency-name: "mistune"
