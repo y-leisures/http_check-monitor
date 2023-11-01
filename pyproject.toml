@@ -9,6 +9,7 @@ license = "MIT"
 python = "^3.9"
 boto3 = "^1.26.41"
 requests = "^2.25"
+urllib3 = "<2"
 
 [tool.poetry.group.dev.dependencies]
 aws-sam-cli = "^1.66.0"
