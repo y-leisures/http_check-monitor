@@ -1,26 +1,26 @@
 [tool.poetry]
-authors = ["Yukihiro Okada <yuokada@users.noreply.github.com>"]
-description = ""
-license = "MIT"
 name = "bms-monitor-sam"
 version = "0.2.0"
+description = ""
+authors = ["Yukihiro Okada <yuokada@users.noreply.github.com>"]
+license = "MIT"
 
 [tool.poetry.dependencies]
-boto3 = "^1.26.41"
 python = "^3.9"
+boto3 = "^1.26.41"
 requests = "^2.25"
 urllib3 = "<2"
 
 [tool.poetry.group.dev.dependencies]
 aws-sam-cli = "^1.100.0"
-notebook = "^7.0.3"
 pytest = "^7.2.0"
+notebook = "^7.0.3"
 ruff = "^0.1.5"
 
 [tool.ruff]
 # see: https://docs.astral.sh/ruff/configuration/#using-pyprojecttoml
-fixable = ["I", "E", "W"]
-select = ["I", "E", "W"]
+select  = ["I", "E", "W", "F"]
+fixable = ["I", "E", "W", "F"]
 
 line-length = 120
 
@@ -33,5 +33,5 @@ target-version = "py39"
 quote-style = "double"
 
 [build-system]
-build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
