@@ -51,9 +51,9 @@ jobs:
       - name: Print hint message
         run: |
           echo "### How to fix CI failures ###"
-          echo "poetry run black       ${{ steps.changed_files.outputs.changed_files }}"
+          echo "poetry run ruff format --check --diff ${{ steps.changed_files.outputs.changed_files }}"
           echo "poetry run ruff --fix  ${{ steps.changed_files.outputs.changed_files }}"
-      - name: Run black and ruff
+      - name: Run  and ruff
         run: |
-          poetry run black --check --diff "${{ steps.changed_files.outputs.changed_files }}"
+          poetry run ruff format --check --diff "${{ steps.changed_files.outputs.changed_files }}"
           poetry run ruff check           "${{ steps.changed_files.outputs.changed_files }}"
