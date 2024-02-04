@@ -129,10 +129,10 @@ Resources:
       LayerName: !Sub "bms-common-function-layer-${Stage}"
       ContentUri: layers/
       CompatibleRuntimes:
-        - python3.9
+        - python3.11
       RetentionPolicy: Retain
     Metadata:
-      BuildMethod: python3.9
+      BuildMethod: python3.11
 
   BmsCheckWebsitePeriodicallyFun:
     Type: AWS::Serverless::Function
@@ -143,7 +143,7 @@ Resources:
       FunctionName: !Sub "bms-http-monitor-${Stage}"
       CodeUri: check_website/
       Handler: app.lambda_handler
-      Runtime: python3.9
+      Runtime: python3.11
       Layers:
         - !Ref BmsPythonLayer
       Role: !GetAtt BmsMonitoringLambdaRole.Arn
