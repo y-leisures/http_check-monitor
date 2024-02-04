@@ -6,7 +6,7 @@ authors = ["Yukihiro Okada <yuokada@users.noreply.github.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.11"
 boto3 = "^1.26.41"
 requests = "^2.25"
 urllib3 = "<2"
@@ -24,8 +24,8 @@ fixable = ["I", "E", "W", "F"]
 
 line-length = 120
 
-# Assume Python 3.9
-target-version = "py39"
+# Assume Python 3.11
+target-version = "py311"
 
 [tool.ruff.format]
 # instead of "skip-string-normalization = true"
