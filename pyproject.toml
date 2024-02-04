@@ -13,7 +13,7 @@ urllib3 = "<2"
 
 [tool.poetry.group.dev.dependencies]
 aws-sam-cli = "^1.100.0"
-pytest = "^7.2.0"
+pytest = "^8.0.0"
 notebook = "^7.0.7"
 ruff = "^0.2.0"
 
