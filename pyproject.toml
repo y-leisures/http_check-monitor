@@ -15,7 +15,7 @@ urllib3 = "<3"
 aws-sam-cli = "^1.116.0"
 pytest = "^8.2.0"
 notebook = "^7.0.7"
-ruff = "^0.3.0"
+ruff = "^0.5.0"
 
 [tool.ruff]
 # see: https://docs.astral.sh/ruff/configuration/#using-pyprojecttoml
