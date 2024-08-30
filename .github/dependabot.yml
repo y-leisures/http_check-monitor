@@ -18,7 +18,7 @@ updates:
       - "yuokada"
     groups:
       jupyter-dependencies:
-        patternes:
+        patterns:
           - jupyterlab
           - notebook
     ignore:
