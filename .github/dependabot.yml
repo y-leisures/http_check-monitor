@@ -16,6 +16,11 @@ updates:
     open-pull-requests-limit: 10
     reviewers:
       - "yuokada"
+    groups:
+      jupyter-dependencies:
+        patternes:
+          - jupyterlab
+          - notebook
     ignore:
       # ignore all patch updates
       - dependency-name: "*"
