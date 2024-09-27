@@ -16,4 +16,4 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           # Set a token for approving the PR on behalf of the repo owner
           GH_TOKEN: ${{ secrets.ACTIONS_REPO_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_REPO_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
