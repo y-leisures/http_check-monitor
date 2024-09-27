@@ -3,16 +3,17 @@ import json
 import os
 import sqlite3
 import uuid
+
 from collections import namedtuple
 from sqlite3 import Cursor
 from urllib.error import HTTPError
 
 import boto3
 import requests
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
 
 from notify_to_slack import notify_to_slack
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 S3_BUCKET = os.getenv('S3_BUCKET', 'y-bms-tokyo')
 OBJECT_KEY_ON_S3 = os.getenv('OBJECT_KEY_ON_S3', 'http_monitor/monitor.db')
@@ -32,7 +33,7 @@ class FailureEven:
     resolved: bool = False
 
 
-class SqliteOnS3Handler(object):
+class SqliteOnS3Handler:
     # see: https://stackoverflow.com/questions/3774328/implementing-use-of-with-object-as-f-in-custom-class-in-python
 
     def __init__(self, bucket: str, object_file: str):
@@ -100,13 +101,13 @@ def execute_ddl_queries(cursor: Cursor) -> None:
         """,
     }
     for table, ddl in queries.items():
-        print("Execute the DDL for {}".format(table))
+        print(f"Execute the DDL for {table}")
         cursor.execute(ddl)
     return
 
 
 def record_status_change(cursor: Cursor, new_status: str) -> None:
-    query = "INSERT INTO status_history (new_status) VALUES ('{}')".format(new_status)
+    query = f"INSERT INTO status_history (new_status) VALUES ('{new_status}')"
     response = cursor.execute(query)
     if response.rowcount != 1:
         raise RuntimeError('Fail to insert into status_history')
@@ -153,7 +154,7 @@ def record_failure_event(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_
             # Notify to slack
             monitor_url = os.getenv("MONITOR_URL")
             payload = {
-                "text": "{} is down! Please contact to administrators! ⚠️".format(monitor_url),
+                "text": f"{monitor_url} is down! Please contact to administrators! ⚠️",
             }
             notify_to_slack(payload)
         else:
@@ -191,7 +192,7 @@ def lambda_handler(event, context):
     if not result:  # When the server is down
         record_failure_event()
         payload = {
-            "text": "{} is down! Please contact to administrators! ⚠️".format(monitor_url),
+            "text": f"{monitor_url} is down! Please contact to administrators! ⚠️",
         }
         return {
             "statusCode": 200,
@@ -212,7 +213,7 @@ def lambda_handler(event, context):
                 query = "UPDATE current_status SET status = 'up', updated_at = current_timestamp WHERE id = 1"
                 record_status_change(cursor, 'up')
                 payload = {
-                    "text": "{} is back to normal! ✅".format(monitor_url),
+                    "text": f"{monitor_url} is back to normal! ✅",
                 }
                 notify_to_slack(payload)
             response = cursor.execute(query)
@@ -225,7 +226,7 @@ def lambda_handler(event, context):
             "statusCode": 200,
             "body": json.dumps(
                 {
-                    "text": "{} is running!".format(monitor_url),
+                    "text": f"{monitor_url} is running!",
                     #  "location": ip.text.replace("\n", "")
                 }
             ),
