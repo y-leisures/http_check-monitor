@@ -15,7 +15,7 @@ urllib3 = "<3"
 aws-sam-cli = "^1.123.0"
 pytest = "^8.3"
 notebook = "^7.0.7"
-ruff = "^0.6"
+ruff = "^0.7"
 
 [tool.ruff]
 line-length = 120
