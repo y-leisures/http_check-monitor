@@ -17,7 +17,7 @@ updates:
     reviewers:
       - "yuokada"
     allow:
-      dependency-type: "direct"
+      - dependency-type: "direct"
     groups:
       jupyter-dependencies:
         patterns:
