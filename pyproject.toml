@@ -14,7 +14,7 @@ urllib3 = "<3"
 [tool.poetry.group.dev.dependencies]
 aws-sam-cli = "^1.123.0"
 pytest = "^8.3"
-notebook = "^7.0.7"
+notebook = "^7.3.0"
 ruff = "^0.8"
 
 [tool.ruff]
