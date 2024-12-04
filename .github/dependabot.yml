@@ -16,6 +16,8 @@ updates:
     open-pull-requests-limit: 10
     reviewers:
       - "yuokada"
+    allow:
+      dependency-type: "direct"
     groups:
       jupyter-dependencies:
         patterns:
