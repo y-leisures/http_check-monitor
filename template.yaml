@@ -130,6 +130,7 @@ Resources:
       ContentUri: layers/
       CompatibleRuntimes:
         - python3.11
+        - python3.12
       RetentionPolicy: Retain
     Metadata:
       BuildMethod: python3.11
