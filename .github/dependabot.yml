@@ -19,10 +19,12 @@ updates:
     allow:
       - dependency-type: "direct"
     groups:
-      jupyter-dependencies:
-        patterns:
-          - jupyterlab
-          - notebook
+      # jupyter-dependencies:
+      #   patterns:
+      #     - jupyterlab
+      #     - notebook
+      dev-dependencies:
+        dependency-type: development
     ignore:
       # ignore all patch updates
       - dependency-name: "*"
