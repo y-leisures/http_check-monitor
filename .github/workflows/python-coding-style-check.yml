@@ -38,16 +38,7 @@ jobs:
           # changed_files=$(git diff --name-only master... | grep '\.py$' || true)
           echo "changed_files=$changed_files" >> $GITHUB_OUTPUT
         id: changed_files
-      - name: Install poetry
-        run: |
-          pip3 install -q poetry
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'poetry'
-      - name: Install dependencies
-        run: |
-          poetry install
+      - uses: ./.github/actions/common-action
       - name: Run ruff
         run: |
           poetry run ruff format --check --diff "${{ steps.changed_files.outputs.changed_files }}"
@@ -57,16 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install poetry
-        run: |
-          pip3 install -q poetry
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'poetry'
-      - name: Install dependencies
-        run: |
-          poetry install
+      - uses: ./.github/actions/common-action
       - name: Run mypy
         run: |
           poetry run mypy --config pyproject.toml check_website
