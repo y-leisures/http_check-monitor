@@ -42,7 +42,7 @@ lines-between-types = 1
 [tool.ruff.format]
 # instead of "skip-string-normalization = true"
 # see: https://github.com/astral-sh/ruff/issues/7525
-quote-style = "preserve"
+# quote-style = "preserve"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
