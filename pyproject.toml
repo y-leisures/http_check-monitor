@@ -7,7 +7,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-boto3 = "^1.26.41"
+boto3 = "^1.37.16"
 requests = "^2.25"
 urllib3 = "<3"
 
