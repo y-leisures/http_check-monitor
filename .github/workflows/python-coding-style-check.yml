@@ -48,12 +48,10 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install
-      - name: Print hint message
-        run: |
-          echo "### How to fix CI failures ###"
-          echo "poetry run ruff format --check --diff ${{ steps.changed_files.outputs.changed_files }}"
-          echo "poetry run ruff --fix  ${{ steps.changed_files.outputs.changed_files }}"
-      - name: Run  and ruff
+      - name: Run ruff
         run: |
           poetry run ruff format --check --diff "${{ steps.changed_files.outputs.changed_files }}"
           poetry run ruff check           "${{ steps.changed_files.outputs.changed_files }}"
+      - name: Run mypy
+        run: |
+          poetry run mypy --config pyproject.toml check_website

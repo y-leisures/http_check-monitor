@@ -10,13 +10,24 @@ from urllib.error import HTTPError
 
 import boto3
 import requests
+from requests import Response
 
-from notify_to_slack import notify_to_slack
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 S3_BUCKET = os.getenv("S3_BUCKET", "y-bms-tokyo")
 OBJECT_KEY_ON_S3 = os.getenv("OBJECT_KEY_ON_S3", "http_monitor/monitor.db")
+
+
+def notify_to_slack(payload: dict) -> Response:
+    webhook_url = os.getenv("SLACK_WEBHOOK_URL", "")
+    if not webhook_url:
+        raise ValueError("SLACK_WEBHOOK_URL environment variable not set")
+    response: Response = requests.post(
+        webhook_url,
+        json=payload,
+    )
+    return response
 
 
 def namedtuple_factory(cursor, row):
@@ -114,7 +125,7 @@ def record_status_change(cursor: Cursor, new_status: str) -> None:
     return
 
 
-def check_health(url: object, timeout: int = 30) -> bool:
+def check_health(url: str, timeout: int = 30) -> bool:
     retries = Retry(total=5, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
     s = requests.session()
     s.mount(prefix="http", adapter=HTTPAdapter(max_retries=retries))

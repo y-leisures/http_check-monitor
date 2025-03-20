@@ -17,6 +17,8 @@ aws-sam-cli = "^1.135.0"
 pytest = "^8.3"
 notebook = "^7.3.0"
 ruff = "^0.11"
+mypy = "^1.15.0"
+types-requests = "^2.32.0.20250306"
 
 [tool.ruff]
 line-length = 120
@@ -44,6 +46,18 @@ lines-between-types = 1
 # instead of "skip-string-normalization = true"
 # see: https://github.com/astral-sh/ruff/issues/7525
 # quote-style = "preserve"
+
+[tool.mypy]
+# see: https://mypy.readthedocs.io/en/latest/config_file.html#example-pyproject-toml
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disable_error_code = "annotation-unchecked"
+
+[[tool.mypy.overrides]]
+module = ["requests.packages.urllib3.util.retry"]
+ignore_missing_imports = true
+check_untyped_defs = false
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
