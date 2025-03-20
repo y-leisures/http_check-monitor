@@ -4,6 +4,7 @@ version = "0.2.0"
 description = ""
 authors = ["Yukihiro Okada <yuokada@users.noreply.github.com>"]
 license = "MIT"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
