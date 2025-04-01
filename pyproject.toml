@@ -13,7 +13,7 @@ requests = "^2.25"
 urllib3 = "<3"
 
 [tool.poetry.group.dev.dependencies]
-aws-sam-cli = "^1.135.0"
+aws-sam-cli = "^1.136.0"
 pytest = "^8.3"
 notebook = "^7.3.0"
 ruff = "^0.11"
