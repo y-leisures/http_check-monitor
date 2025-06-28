@@ -37,7 +37,7 @@ def namedtuple_factory(cursor, row):
 
 
 @dataclasses.dataclass
-class FailureEvent:
+class FailureEven:
     eventTime: int
     failing_url: str
     completionTime: int = 0
