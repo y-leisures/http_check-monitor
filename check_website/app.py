@@ -10,8 +10,8 @@ from urllib.error import HTTPError
 
 import boto3
 import requests
-from requests import Response
 
+from requests import Response
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
@@ -37,7 +37,7 @@ def namedtuple_factory(cursor, row):
 
 
 @dataclasses.dataclass
-class FailureEven:
+class FailureEvent:
     eventTime: int
     failing_url: str
     completionTime: int = 0
