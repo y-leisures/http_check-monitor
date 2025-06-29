@@ -17,5 +17,5 @@ sam_delete:
 	uv run sam delete --debug --region ap-northeast-1
 
 update_requirements_txt:
-	uv pip freeze > requirements.txt
-	uv pip freeze > layers/requirements.txt
+	uv export --no-hashes --no-header --no-dev -o requirements.txt
+	uv export --no-hashes --no-header --no-dev -o layers/requirements.txt
