@@ -7,15 +7,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    reviewers:
-      - "yuokada"
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 10
-    reviewers:
-      - "yuokada"
     allow:
       - dependency-type: "direct"
     groups:
