@@ -1,24 +1,37 @@
-[tool.poetry]
+[project]
 name = "bms-monitor-sam"
 version = "0.2.0"
 description = ""
-authors = ["Yukihiro Okada <yuokada@users.noreply.github.com>"]
+authors = [{name = "Yukihiro Okada", email = "yuokada@users.noreply.github.com"}]
 license = "MIT"
-package-mode = false
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.37.16",
+    "requests>=2.25",
+    "urllib3<3",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-boto3 = "^1.37.16"
-requests = "^2.25"
-urllib3 = "<3"
+[dependency-groups]
+dev = [
+    "aws-sam-cli>=1.135.0",
+    "pytest>=8.3",
+    "notebook>=7.3.0",
+    "ruff>=0.12.1",
+    "mypy>=1.15.0",
+    "types-requests>=2.32.0.20250306",
+]
+[project.optional-dependencies]
+dev = [
+    "aws-sam-cli>=1.135.0",
+    "pytest>=8.3",
+    "notebook>=7.3.0",
+    "mypy>=1.15.0",
+    "types-requests>=2.32.0.20250306",
+]
 
-[tool.poetry.group.dev.dependencies]
-aws-sam-cli = "^1.135.0"
-pytest = "^8.3"
-notebook = "^7.3.0"
-ruff = "^0.12"
-mypy = "^1.15.0"
-types-requests = "^2.32.0.20250306"
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["check_website*"]
 
 [tool.ruff]
 line-length = 120
@@ -59,6 +72,5 @@ module = ["requests.packages.urllib3.util.retry"]
 ignore_missing_imports = true
 check_untyped_defs = false
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+
+

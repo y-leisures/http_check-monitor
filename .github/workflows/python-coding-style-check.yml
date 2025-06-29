@@ -41,8 +41,8 @@ jobs:
       - uses: ./.github/actions/common-action
       - name: Run ruff
         run: |
-          poetry run ruff format --check --diff "${{ steps.changed_files.outputs.changed_files }}"
-          poetry run ruff check           "${{ steps.changed_files.outputs.changed_files }}"
+          uv run ruff format --check --diff "${{ steps.changed_files.outputs.changed_files }}"
+          uv run ruff check           "${{ steps.changed_files.outputs.changed_files }}"
 
   mypy_check:
     runs-on: ubuntu-latest
@@ -51,4 +51,4 @@ jobs:
       - uses: ./.github/actions/common-action
       - name: Run mypy
         run: |
-          poetry run mypy --config pyproject.toml check_website
+          uv run mypy --config pyproject.toml check_website

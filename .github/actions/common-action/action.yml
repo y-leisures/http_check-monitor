@@ -4,15 +4,14 @@ description: 'Common Action'
 runs:
   using: 'composite'
   steps:
-    - name: Install poetry
+    - name: Install uv
       shell: bash
       run: |
-        pip3 install -q poetry
+        pip3 install -q uv
     - uses: actions/setup-python@v5
       with:
         python-version: '3.12'
-        cache: 'poetry'
     - name: Install dependencies
       shell: bash
       run: |
-        poetry install
+        uv sync --group dev

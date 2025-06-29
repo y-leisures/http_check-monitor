@@ -28,6 +28,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
+      - run: pip install -U pip
       - run: sam build --use-container
       - run: sam validate --lint --template-file template.yaml
       - run: sam deploy --stack-name bms-monitor-development --no-confirm-changeset --no-fail-on-empty-changeset --tags 'Owner="Yukihiro Okada" service=bms-monitoring cdk=true repository="https://github.com/y-leisures/http_check-monitor"' --parameter-overrides "WebhookUrl=${{ secrets.SLACK_HOOK_URL }}"
