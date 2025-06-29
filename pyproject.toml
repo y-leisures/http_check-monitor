@@ -11,12 +11,20 @@ dependencies = [
     "urllib3<3",
 ]
 
+[dependency-groups]
+dev = [
+    "aws-sam-cli>=1.135.0",
+    "pytest>=8.3",
+    "notebook>=7.3.0",
+    "ruff>=0.12.1",
+    "mypy>=1.15.0",
+    "types-requests>=2.32.0.20250306",
+]
 [project.optional-dependencies]
 dev = [
     "aws-sam-cli>=1.135.0",
     "pytest>=8.3",
     "notebook>=7.3.0",
-    "ruff>=0.12",
     "mypy>=1.15.0",
     "types-requests>=2.32.0.20250306",
 ]
@@ -63,5 +71,6 @@ disable_error_code = "annotation-unchecked"
 module = ["requests.packages.urllib3.util.retry"]
 ignore_missing_imports = true
 check_untyped_defs = false
+
 
 
