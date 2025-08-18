@@ -16,7 +16,7 @@ jobs:
     outputs:
       changed_files: ${{ steps.changed_files.outputs.changed_files }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: List Changed Python Files
         run: |
           git fetch origin ${{ github.event.pull_request.base.sha }}
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.check_files.outputs.changed_files != ''
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: List Changed Python Files
         run: |
           git fetch origin ${{ github.event.pull_request.base.sha }}
@@ -47,7 +47,7 @@ jobs:
   mypy_check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/common-action
       - name: Run mypy
         run: |
