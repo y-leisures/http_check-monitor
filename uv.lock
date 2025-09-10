@@ -238,15 +238,6 @@ dependencies = [
     { name = "urllib3" },
 ]
 
-[package.optional-dependencies]
-dev = [
-    { name = "aws-sam-cli" },
-    { name = "mypy" },
-    { name = "notebook" },
-    { name = "pytest" },
-    { name = "types-requests" },
-]
-
 [package.dev-dependencies]
 dev = [
     { name = "aws-sam-cli" },
@@ -259,13 +250,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "aws-sam-cli", marker = "extra == 'dev'", specifier = ">=1.135.0" },
     { name = "boto3", specifier = ">=1.37.16" },
-    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.15.0" },
-    { name = "notebook", marker = "extra == 'dev'", specifier = ">=7.3.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3" },
     { name = "requests", specifier = ">=2.25" },
-    { name = "types-requests", marker = "extra == 'dev'", specifier = ">=2.32.0.20250306" },
     { name = "urllib3", specifier = "<3" },
 ]
 

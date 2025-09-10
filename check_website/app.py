@@ -6,7 +6,7 @@ import uuid
 
 from collections import namedtuple
 from sqlite3 import Cursor
-from urllib.error import HTTPError
+from typing import Any, Tuple
 
 import boto3
 import requests
@@ -14,12 +14,13 @@ import requests
 from requests import Response
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+from requests.exceptions import HTTPError, ConnectionError
 
 S3_BUCKET = os.getenv("S3_BUCKET", "y-bms-tokyo")
 OBJECT_KEY_ON_S3 = os.getenv("OBJECT_KEY_ON_S3", "http_monitor/monitor.db")
 
 
-def notify_to_slack(payload: dict) -> Response:
+def notify_to_slack(payload: dict[str, Any]) -> Response:
     webhook_url = os.getenv("SLACK_WEBHOOK_URL", "")
     if not webhook_url:
         raise ValueError("SLACK_WEBHOOK_URL environment variable not set")
@@ -30,7 +31,7 @@ def notify_to_slack(payload: dict) -> Response:
     return response
 
 
-def namedtuple_factory(cursor, row):
+def namedtuple_factory(cursor: sqlite3.Cursor, row: Tuple[Any, ...]):
     fields = [column[0] for column in cursor.description]
     cls = namedtuple("Row", fields)
     return cls._make(row)
@@ -52,24 +53,27 @@ class SqliteOnS3Handler:
         self.object_file = object_file
         self.tmp_filename = self._generate_tmp_filename()
         self._client = boto3.client("s3")
+        self.connection: sqlite3.Connection | None = None
 
-    def __enter__(self):
+    def __enter__(self) -> "SqliteOnS3Handler":
         self.connection = self._fetch_file()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        assert self.connection is not None
         self.connection.commit()
         self.connection.close()
         self._put_file()
 
-    def _fetch_file(self):
+    def _fetch_file(self) -> sqlite3.Connection:
         try:
             response: dict = self._client.get_object(Bucket=self.bucket, Key=self.object_file)
-            if "Body" in response:
-                contents = response["Body"].read()
-                with open(self.tmp_filename, "wb") as fh:
-                    fh.write(contents)
-                return sqlite3.connect(self.tmp_filename)
+            if "Body" not in response:
+                raise RuntimeError("S3 object response has no Body")
+            contents = response["Body"].read()
+            with open(self.tmp_filename, "wb") as fh:
+                fh.write(contents)
+            return sqlite3.connect(self.tmp_filename)
         except RuntimeError as e:
             print(e)
             raise RuntimeError(f"Failed to open(s3://{self.bucket}/{self.object_file})")
@@ -145,8 +149,9 @@ def check_health(url: str, timeout: int = 30) -> bool:
         return False
 
 
-def record_failure_event(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_ON_S3):
+def record_failure_event(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_ON_S3) -> None:
     with SqliteOnS3Handler(bucket=bucket, object_file=object_file) as db:
+        assert db.connection is not None
         db.connection.row_factory = namedtuple_factory
         cursor: Cursor = db.connection.cursor()
 
@@ -154,7 +159,10 @@ def record_failure_event(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_
 
         # Fetch current status and then update the record
         current_status = cursor.execute("select * FROM current_status WHERE id = 1").fetchone()
-        print(current_status)
+        if current_status is None:
+            cursor.execute("INSERT INTO current_status (id, status) VALUES (1, 'up')")
+            current_status = cursor.execute("select * FROM current_status WHERE id = 1").fetchone()
+        assert current_status is not None
         if current_status.status == "up":
             query = "UPDATE current_status SET status = 'down', updated_at = current_timestamp WHERE id = 1"
             response = cursor.execute(query)
@@ -163,7 +171,7 @@ def record_failure_event(bucket: str = S3_BUCKET, object_file: str = OBJECT_KEY_
             record_status_change(cursor, "down")
 
             # Notify to slack
-            monitor_url = os.getenv("MONITOR_URL")
+            monitor_url = os.getenv("MONITOR_URL") or "unknown"
             payload = {
                 "text": f"{monitor_url} is down! Please contact to administrators! ⚠️",
             }
@@ -199,6 +207,8 @@ def lambda_handler(event, context):
     """
 
     monitor_url = os.getenv("MONITOR_URL")
+    if monitor_url is None:
+        raise ValueError("MONITOR_URL environment variable not set")
     result: bool = check_health(monitor_url)
     if not result:  # When the server is down
         record_failure_event()
@@ -211,6 +221,7 @@ def lambda_handler(event, context):
         }
     else:
         with SqliteOnS3Handler(bucket=S3_BUCKET, object_file=OBJECT_KEY_ON_S3) as db:
+            assert db.connection is not None
             db.connection.row_factory = namedtuple_factory
             cursor: Cursor = db.connection.cursor()
 
@@ -218,6 +229,10 @@ def lambda_handler(event, context):
 
             # Fetch current status and then update the record
             current_status = cursor.execute("select * FROM current_status WHERE id = 1").fetchone()
+            if current_status is None:
+                cursor.execute("INSERT INTO current_status (id, status) VALUES (1, 'up')")
+                current_status = cursor.execute("select * FROM current_status WHERE id = 1").fetchone()
+            assert current_status is not None
             if current_status.status == "up":
                 query = "UPDATE current_status SET updated_at = current_timestamp WHERE id = 1"
             else:
